@@ -1,0 +1,134 @@
+<mxfile host="app.diagrams.net" modified="2026-06-03T21:00:00.000Z" agent="claude-obsidian" etag="coach-app-data" version="26.0.0" type="device">
+  <diagram name="DynamoDB Data Model" id="coach-app-data">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="&lt;h1&gt;Uplift Coach — DynamoDB Data Model&lt;/h1&gt;&lt;p&gt;Single-Table Design with GSIs&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;fontSize=16;fontColor=#FFFFFF;align=center;" vertex="1" parent="1">
+          <mxGeometry x="400" y="10" width="600" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- MAIN TABLE -->
+        <mxCell id="main-table-box" value="" style="rounded=1;arcSize=4;fillColor=#1a1a1a;strokeColor=#06b6d4;strokeWidth=3;" vertex="1" parent="1">
+          <mxGeometry x="50" y="80" width="600" height="600" as="geometry" />
+        </mxCell>
+
+        <mxCell id="main-label" value="&lt;b&gt;Main Table: ProgramsAndSessions&lt;/b&gt; | PK + SK | CoachIdIndex GSI | OrgIdIndex GSI | TTL" style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;fontColor=#06b6d4;" vertex="1" parent="1">
+          <mxGeometry x="70" y="90" width="560" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Entity boxes -->
+        <mxCell id="user-profile" value="&lt;b&gt;USER#123&lt;/b&gt;&lt;br&gt;SK: #PROFILE&lt;br&gt;&lt;br&gt;{id, email, password,&lt;br&gt;role, displayName,&lt;br&gt;coachId, orgId, orgRole,&lt;br&gt;subscriptionPlan, status,&lt;br&gt;stripeCustomerId, accessCode,&lt;br&gt;onboardingComplete, avatarUrl,&lt;br&gt;emailVerified, ...}" style="rounded=1;fillColor=#262626;strokeColor=#8b5cf6;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="80" y="130" width="170" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="email-lookup" value="&lt;b&gt;EMAIL#user@site.com&lt;/b&gt;&lt;br&gt;SK: USER&lt;br&gt;&lt;br&gt;{userId}&lt;br&gt;&lt;br&gt;&lt;i&gt;Reverse lookup for&lt;br&gt;fast login query&lt;br&gt;(coaches have this;&lt;br&gt;alumni fallback to scan)&lt;/i&gt;" style="rounded=1;fillColor=#262626;strokeColor=#f59e0b;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="80" y="305" width="170" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="program-meta" value="&lt;b&gt;CLIENT#Alice&lt;/b&gt;&lt;br&gt;SK: PROGRAM#456&lt;br&gt;&lt;br&gt;{clientName, programName,&lt;br&gt;coachName, coachId, orgId,&lt;br&gt;visibility: private|org|assigned,&lt;br&gt;assignedClients:[],&lt;br&gt;isExample: false, ...}" style="rounded=1;fillColor=#262626;strokeColor=#3b82f6;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="280" y="130" width="170" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="session-item" value="&lt;b&gt;CLIENT#Alice&lt;/b&gt;&lt;br&gt;SK: SESSION#789&lt;br&gt;&lt;br&gt;{sessionName, exercises:[],&lt;br&gt;position, ...}&lt;br&gt;&lt;br&gt;&lt;i&gt;Sorted by position&lt;br&gt;within client partition&lt;/i&gt;" style="rounded=1;fillColor=#262626;strokeColor=#3b82f6;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="280" y="305" width="170" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="workout-log" value="&lt;b&gt;USER#123&lt;/b&gt;&lt;br&gt;SK: LOG#2026-04-15&lt;br&gt;&lt;br&gt;{reps, sets, weight, rpe,&lt;br&gt;exerciseName, ...}&lt;br&gt;&lt;br&gt;&lt;i&gt;Chronological sort keys&lt;br&gt;for time-series data&lt;/i&gt;" style="rounded=1;fillColor=#262626;strokeColor=#16a34a;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="480" y="130" width="150" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="body-stat" value="&lt;b&gt;USER#123&lt;/b&gt;&lt;br&gt;SK: BODY#2026-04-15&lt;br&gt;&lt;br&gt;{weight, height, bf%,&lt;br&gt;measurements:{...}, ...}" style="rounded=1;fillColor=#262626;strokeColor=#16a34a;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="480" y="285" width="150" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bilan" value="&lt;b&gt;USER#123&lt;/b&gt;&lt;br&gt;SK: BILAN#2026-W14&lt;br&gt;&lt;br&gt;{week, fatigue, motivation,&lt;br&gt;notes, coachFeedback, ...}" style="rounded=1;fillColor=#262626;strokeColor=#D4A017;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="80" y="445" width="170" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="nutrition" value="&lt;b&gt;USER#123&lt;/b&gt;&lt;br&gt;SK: NUTRITION#2026-04-15&lt;br&gt;&lt;br&gt;{date, meals:[{name, foods, macros}],&lt;br&gt;totals:{cal, protein, carbs, fat}}" style="rounded=1;fillColor=#262626;strokeColor=#16a34a;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="280" y="445" width="170" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="recipe" value="&lt;b&gt;RECIPE#abc&lt;/b&gt;&lt;br&gt;SK: META&lt;br&gt;&lt;br&gt;{title, ingredients, macros,&lt;br&gt;instructions, ...}" style="rounded=1;fillColor=#262626;strokeColor=#D4A017;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="480" y="405" width="150" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="exercise" value="&lt;b&gt;EXERCISE#3950&lt;/b&gt;&lt;br&gt;SK: META&lt;br&gt;&lt;br&gt;{name, muscle, equipment,&lt;br&gt;difficulty, ...}&lt;br&gt;&lt;br&gt;3950 exercises seeded" style="rounded=1;fillColor=#262626;strokeColor=#3b82f6;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="480" y="510" width="150" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="other-note" value="Notes, Books, Meal Plans,&lt;br&gt;Templates, Challenges...&lt;br&gt;all share PK/SK pattern" style="text;html=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#999999;" vertex="1" parent="1">
+          <mxGeometry x="80" y="570" width="200" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- GSI annotations -->
+        <mxCell id="gsi-coach" value="&lt;b&gt;CoachIdIndex GSI&lt;/b&gt;&lt;br&gt;Hash: coachId | Range: SK&lt;br&gt;Query: 'all data for coach X'" style="rounded=1;fillColor=#1a1a1a;strokeColor=#f59e0b;strokeWidth=1;fontColor=#f59e0b;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="680" y="130" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gsi-org" value="&lt;b&gt;OrgIdIndex GSI&lt;/b&gt;&lt;br&gt;Hash: orgId | Range: SK&lt;br&gt;Query: 'all data in org Y'" style="rounded=1;fillColor=#1a1a1a;strokeColor=#f59e0b;strokeWidth=1;fontColor=#f59e0b;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="680" y="205" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gsi-arrow1" value="" style="endArrow=block;strokeColor=#f59e0b;strokeWidth=1;" edge="1" parent="1" source="user-profile" target="gsi-coach">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gsi-arrow2" value="" style="endArrow=block;strokeColor=#f59e0b;strokeWidth=1;" edge="1" parent="1" source="program-meta" target="gsi-coach">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="470" y="210" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- AUX TABLES -->
+        <mxCell id="aux-box" value="" style="rounded=1;arcSize=4;fillColor=#1a1a1a;strokeColor=#333333;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="50" y="700" width="1320" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aux-label" value="&lt;b&gt;Auxiliary Tables&lt;/b&gt; | All: PAY_PER_REQUEST | TTL where applicable" style="text;html=1;strokeColor=none;fillColor=none;fontSize=13;fontColor=#06b6d4;" vertex="1" parent="1">
+          <mxGeometry x="70" y="710" width="500" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aux-invite" value="&lt;b&gt;invite_tokens&lt;/b&gt;&lt;br&gt;PK: token (hash)&lt;br&gt;TTL: expiresAt&lt;br&gt;Student/coach invites" style="rounded=1;fillColor=#262626;strokeColor=#06b6d4;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="745" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aux-billing" value="&lt;b&gt;billing&lt;/b&gt;&lt;br&gt;PK + SK&lt;br&gt;Stripe subscription&lt;br&gt;data per coach" style="rounded=1;fillColor=#262626;strokeColor=#06b6d4;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="250" y="745" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aux-blocklist" value="&lt;b&gt;token_blocklist&lt;/b&gt;&lt;br&gt;PK: jti (hash)&lt;br&gt;TTL: expiresAt&lt;br&gt;JWT revocation" style="rounded=1;fillColor=#262626;strokeColor=#ec4899;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="420" y="745" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aux-audit" value="&lt;b&gt;security_audit&lt;/b&gt;&lt;br&gt;PK + SK + TTL&lt;br&gt;Sentinel events&lt;br&gt;(LOGIN, LOGOUT, etc)" style="rounded=1;fillColor=#262626;strokeColor=#ec4899;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="590" y="745" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aux-push" value="&lt;b&gt;push_tokens&lt;/b&gt;&lt;br&gt;PK: userId | SK: endpoint&lt;br&gt;TTL: expiresAt&lt;br&gt;WebPush tokens" style="rounded=1;fillColor=#262626;strokeColor=#06b6d4;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="760" y="745" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Visibility legend -->
+        <mxCell id="vis-box" value="" style="rounded=1;arcSize=4;fillColor=#1a1a1a;strokeColor=#333333;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="680" y="350" width="280" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="vis-label" value="&lt;b&gt;Program Visibility&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;fontSize=12;fontColor=#FFFFFF;" vertex="1" parent="1">
+          <mxGeometry x="695" y="360" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="vis-private" value="🔒 private — coach only&lt;br&gt;🏢 org — same org coaches&lt;br&gt;👤 assigned — specific clients&lt;br&gt;⭐ example — visible to all&lt;br&gt;&lt;br&gt;Filter: coachId == me&lt;br&gt;|| visibility == 'org' &amp;amp;&amp;amp; orgId == mine&lt;br&gt;|| visibility == 'assigned' &amp;amp;&amp;amp; me in assignedClients&lt;br&gt;|| isExample == true" style="text;html=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#999999;align=left;" vertex="1" parent="1">
+          <mxGeometry x="695" y="385" width="250" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- Key patterns callout -->
+        <mxCell id="patterns" value="&lt;b&gt;Key Patterns&lt;/b&gt;&lt;br&gt;• Collection per user: PK = USER#id&lt;br&gt;• Collection per client: PK = CLIENT#name&lt;br&gt;• Reverse lookup: EMAIL#email → userId&lt;br&gt;• Time-series: SK = TYPE#YYYY-MM-DD&lt;br&gt;• GSI projects ALL for query flexibility&lt;br&gt;• TTL for automatic cleanup (invites, tokens, audit)" style="rounded=1;fillColor=#1a1a1a;strokeColor=#D4A017;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="680" y="80" width="280" height="120" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

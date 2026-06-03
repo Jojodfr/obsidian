@@ -2,7 +2,56 @@
   "version": 1,
   "created": "2026-04-23",
   "description": "Ingest delta tracker and address map for the claude-obsidian vault. Do not hand-edit; wiki-ingest maintains this.",
-  "sources": {},
+  "sources": {
+    ".raw/claude-obsidian-ecosystem-research.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-04-08",
+      "pages_created": ["wiki/sources/claude-obsidian-ecosystem-research.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md"]
+    },
+    ".raw/clearid-directory.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-03",
+      "pages_created": ["wiki/sources/clearid-directory.md", "wiki/entities/ClearID.md", "wiki/entities/ClearID - MCH Interface.md", "wiki/entities/ClearID - SMI Interface.md", "wiki/entities/ClearID - IAM Interface.md", "wiki/entities/ClearID - Symfony API.md", "wiki/concepts/ClearID Integration Architecture.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md"]
+    },
+    ".raw/cnf-repo.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-02",
+      "pages_created": ["wiki/sources/cnf-repo.md", "wiki/entities/Confie.md", "wiki/concepts/Symfony ECS Deployment.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md"]
+    },
+    ".raw/hb8-app-repo.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-02",
+      "pages_created": ["wiki/sources/hb8-app-repo.md", "wiki/entities/Hermes International.md", "wiki/concepts/Two-Repo Architecture.md", "wiki/concepts/Nuxt.js Static Deployment.md", "wiki/concepts/JWT Auth in Static Sites.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md"]
+    },
+    ".raw/klm-repo.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-02",
+      "pages_created": ["wiki/sources/klm-repo.md", "wiki/entities/Kellymorphose.md", "wiki/concepts/Vue.js SPA Static Deployment.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md"]
+    },
+    ".raw/livret-penthievre-sources.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-03",
+      "pages_created": ["wiki/sources/livret-penthievre-sources.md", "wiki/entities/8 Penthièvre.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md", "wiki/entities/Hermes International.md"]
+    },
+    ".raw/coach-app.md": {
+      "hash": "3c54a5b3cfe23b344ee9a65346622063",
+      "ingested_at": "2026-06-03",
+      "pages_created": ["wiki/sources/coach-app-repo.md", "wiki/entities/Uplift Coach.md", "wiki/concepts/Serverless SaaS Architecture.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md"]
+    },
+    ".raw/shop-maintenance-app.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-03",
+      "pages_created": ["wiki/sources/shop-maintenance-app-repo.md", "wiki/entities/Shop Maintenance App.md", "wiki/concepts/Ticketing System Architecture.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md", "wiki/entities/Hermes International.md"]
+    }
+  },
   "address_map": {
     "wiki/concepts/DragonScale Memory.md": "c-000001"
   }

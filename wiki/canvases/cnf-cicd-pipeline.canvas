@@ -1,0 +1,43 @@
+{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Confie (CNF) CI/CD Pipeline\n**Hermes International** | GitLab CI/CD → AWS ECS Fargate | Symfony 7.2 + Kaniko","x":-300,"y":-560,"width":900,"height":120},
+		{"id":"phase2","type":"text","text":"### Phase 2: QUALITY\n- analysis\n- manifest\n- sign\n- verify\n\nSonarQube baseline","x":-200,"y":-180,"width":260,"height":240,"color":"#60A5FA"},
+		{"id":"phase3","type":"text","text":"### Phase 3: ARTIFACT\n- push\n- publish\n- schedule\n\nJFrog Artifactory\nKaniko image","x":180,"y":-220,"width":160,"height":280,"color":"#8b5cf6"},
+		{"id":"phase4","type":"text","text":"### Phase 4: DEPLOY CHK\n- pre_deploy\n- deploy_chk\n\nAWS 543025552220\nECS Fargate\nconfie-chk","x":520,"y":-220,"width":160,"height":300,"color":"#f59e0b"},
+		{"id":"comp-gitguardian","type":"text","text":"**GitGuardian**\nSecret scanning\nFULL_SCAN: true","x":-520,"y":-520,"width":160,"height":160,"color":"#4ADE80"},
+		{"id":"comp-sonar","type":"text","text":"**SonarQube**\nCode quality\nprojectKey: com.hermes:cnf.source","x":-40,"y":-380,"width":200,"height":100,"color":"#8b5cf6"},
+		{"id":"comp-jfrog","type":"text","text":"**JFrog**\nArtifact repository\nContainer images","x":210,"y":-430,"width":140,"height":130,"color":"#60A5FA"},
+		{"id":"env-chk","type":"text","text":"### CHK Environment\nAccount: 543025552220\n\nECS Service: confie-chk-fargate\nSSM: /confie/chk/service/...\n\nTrigger: MR / Branch","x":620,"y":120,"width":270,"height":225,"color":"#f59e0b"},
+		{"id":"env-prd","type":"text","text":"### PRD Environment\nAccount: 027354322115\n\nECS Service: confie-prd-fargate\nSSM: /confie/prd/service/...\n\nTrigger: Git tag","x":620,"y":370,"width":270,"height":230,"color":"#16a34a"},
+		{"id":"wiki-links","type":"text","text":"### Wiki Links\n\n- [[cnf-repo]]\n- [[hb8-app-repo]]\n- [[klm-repo]]\n- [[Hermes International]]\n- [[Confie]]\n- [[Symfony ECS Deployment]]\n- [[Two-Repo Architecture]]","x":980,"y":180,"width":160,"height":140},
+		{"id":"env-matrix","type":"text","text":"### Environment Matrix\n\n| Env | Enabled | Trigger |\n|-----|---------|---------|\n| DEV | false | - |\n| TST | false | - |\n| CHK | true | MR/Branch |\n| ACC | false | - |\n| PRD | true | Git tag |","x":-1100,"y":-600,"width":320,"height":300,"color":"#2D2D2D"},
+		{"id":"phase1","type":"text","text":"### Phase 1: SETUP\n- init\n- build (kaniko)\n- test\n\nVault secrets\nGitGuardian scan","x":-520,"y":-200,"width":220,"height":260,"color":"#E07850"},
+		{"id":"comp-vault","type":"text","text":"**Vault**\nSecrets\nHashiCorp","x":-680,"y":-405,"width":140,"height":100,"color":"#06b6d4"},
+		{"id":"comp-kaniko","type":"text","text":"**Kaniko Build**\nContainer image build\nlanguage: container\ntool: kaniko","x":-360,"y":-430,"width":200,"height":90,"color":"#E07850"},
+		{"id":"comp-ecs","type":"text","text":"**ECS Deploy**\ncomplete-ecs-service-deployment\nfeat/jfrog-migration","x":640,"y":-530,"width":210,"height":170,"color":"#f59e0b"},
+		{"id":"baseline","type":"text","text":"### Base CI/CD\n**baseline-component**\n`baseline@~latest`\n\nProvides stages:\n- init\n- build\n- test\n- analysis\n- manifest\n- sign\n- verify\n- push\n- publish\n- schedule\n\nInputs:\nsonarqube_stage: analysis\nlanguage: container\ntool: kaniko\nlang_version: 1.0.0-amd64","x":-1020,"y":-280,"width":340,"height":600,"color":"#E07850"},
+		{"id":"custom-jobs","type":"text","text":"### Custom Jobs\n\n**get-secrets-rct**\n- Env: chk\n- Trigger: MR/Branch\n\n**get-secrets-prd**\n- Env: prd\n- Trigger: Git tags\n\n**custom_kaniko_build**\n- Writes CI metadata\n- Calls base kaniko\n\n**confie-chk:ecr-push-image**\n- Stage: deploy_chk\n\n**confie-chk:ecs-deploy-service**\n- Stage: deploy_chk\n\n**confie-chk:ecs-push-task-definition**\n- Stage: deploy_chk","x":-1360,"y":60,"width":320,"height":660,"color":"#2D2D2D"},
+		{"id":"security","type":"text","text":"### Security Stack\n\n| Tool | Stage | Purpose |\n|------|-------|---------|\n| GitGuardian | init | Secret scanning |\n| SonarQube | analysis | Code quality |\n| Vault | init | Secrets |\n| JFrog | push | Artifacts |\n| AWS OIDC | deploy | No hardcoded keys |","x":-1480,"y":-392,"width":360,"height":385,"color":"#2D2D2D"},
+		{"id":"container-arch","type":"text","text":"### Container Architecture\n\n```\nDebian 12 (Bookworm)\n  Apache 2.4 (port 80)\n    mod_auth_openidc\n    mod_php8.4\n  PHP 8.4\n    Symfony 7.2\n    PostgreSQL 17 client\n    wkhtmltopdf\n  PostgreSQL 17\n  Supervisor\n  Cron\n```\nUser: www-efs (1001)\nEntry: supervisor-startup.sh","x":100,"y":120,"width":360,"height":450,"color":"#E07850"},
+		{"id":"variables","type":"text","text":"### Key Variables\n\n```yaml\nPUBLISH_REPOSITORY: artifactory\nGITGUARDIAN_FULL_SCAN: \"true\"\nDOCKER_TLS_CERTDIR: \"/certs\"\nGIT_SSL_NO_VERIFY: 'true'\nDEV_ENABLED: \"false\"\nTST_ENABLED: \"false\"\nCHK_ENABLED: \"true\"\nACC_ENABLED: \"false\"\n```","x":-880,"y":360,"width":340,"height":300,"color":"#2D2D2D"},
+		{"id":"repo-structure","type":"text","text":"### Repo: cnf/app/source/\n\n**Symfony 7.2** (PHP 8.4)\n- src/ (full source)\n  - Command/\n  - Controller/\n  - Entity/ (Cnf01t-Cnf27t)\n  - Service/\n  - Security/\n- templates/\n- config/\n- public/\n- environments/\n\n> Full source in repo\n> Not compiled/dist only","x":-480,"y":80,"width":500,"height":490,"color":"#60A5FA"},
+		{"id":"phase5","type":"text","text":"### Phase 5: PRD RELEASE\n- promote\n- release\n- deploy_prd\n- status\n- delete\n\nAWS 027354322115\nECS Fargate\nconfie-prd","x":920,"y":-300,"width":180,"height":380,"color":"#16a34a"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"phase1","fromSide":"right","toNode":"phase2","toSide":"left","color":"#E07850"},
+		{"id":"e2","fromNode":"phase2","fromSide":"right","toNode":"phase3","toSide":"left","color":"#E07850"},
+		{"id":"e3","fromNode":"phase3","fromSide":"right","toNode":"phase4","toSide":"left","color":"#E07850"},
+		{"id":"e4","fromNode":"phase4","fromSide":"right","toNode":"phase5","toSide":"left","color":"#E07850","label":"manual gate"},
+		{"id":"e5","fromNode":"repo-structure","fromSide":"right","toNode":"container-arch","toSide":"left","color":"#888888"},
+		{"id":"e6","fromNode":"container-arch","fromSide":"right","toNode":"env-chk","toSide":"left","color":"#f59e0b"},
+		{"id":"e7","fromNode":"container-arch","fromSide":"right","toNode":"env-prd","toSide":"left","color":"#16a34a"},
+		{"id":"e8","fromNode":"comp-gitguardian","fromSide":"bottom","toNode":"phase1","toSide":"top","color":"#4ADE80"},
+		{"id":"e9","fromNode":"comp-sonar","fromSide":"bottom","toNode":"phase2","toSide":"top","color":"#8b5cf6"},
+		{"id":"e10","fromNode":"comp-vault","fromSide":"bottom","toNode":"phase1","toSide":"top","color":"#06b6d4"},
+		{"id":"e11","fromNode":"comp-jfrog","fromSide":"bottom","toNode":"phase3","toSide":"top","color":"#60A5FA"},
+		{"id":"e12","fromNode":"comp-ecs","fromSide":"bottom","toNode":"phase4","toSide":"top","color":"#f59e0b"},
+		{"id":"e13","fromNode":"comp-kaniko","fromSide":"bottom","toNode":"phase1","toSide":"top","color":"#E07850"},
+		{"id":"e14","fromNode":"wiki-links","fromSide":"left","toNode":"env-chk","toSide":"right","color":"#888888"},
+		{"id":"e15","fromNode":"baseline","fromSide":"right","toNode":"phase1","toSide":"left","color":"#E07850"}
+	]
+}

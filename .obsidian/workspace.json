@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "477f1cf965ca606e",
+        "id": "d504e983115be10e",
         "type": "tabs",
         "children": [
           {
-            "id": "a31de1b302cdc5cf",
+            "id": "7192e2ec4fd2dee9",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "wiki/sources/shop-maintenance-app-repo.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "shop-maintenance-app-repo"
             }
           }
         ]
@@ -40,7 +44,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "Explorateur de fichiers"
             }
           },
           {
@@ -177,15 +181,72 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "switcher:Ouvrir le sélecteur rapide": false,
+      "graph:Ouvrir la vue graphique": false,
+      "canvas:Créer une nouvelle toile": false,
+      "daily-notes:Ouvrir la note quotidienne": false,
+      "templates:Insérer le modèle": false,
+      "command-palette:Ouvrir la palette de commandes": false,
+      "bases:Créer une nouvelle base": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "obsidian-memos:Mémos": false,
+      "obsidian-memos:Thino Super": false,
+      "githobs:Manage a github issue": false,
+      "templater-obsidian:Templater": false
     }
   },
-  "active": "a31de1b302cdc5cf",
-  "lastOpenFiles": []
+  "active": "7192e2ec4fd2dee9",
+  "lastOpenFiles": [
+    "wiki/hot.md",
+    "wiki/getting-started.md",
+    "wiki/folds/fold-k3-from-2026-04-23-to-2026-04-24-n8.md",
+    "wiki/entities/_index.md",
+    "wiki/sources/coach-app-repo.md",
+    "wiki/entities/Uplift Coach.md",
+    "wiki/entities/ClearID.md",
+    "wiki/entities/ballred-obsidian-claude-pkm.md",
+    "wiki/entities/Ar9av-obsidian-wiki.md",
+    "wiki/entities/8 Penthièvre.md",
+    "wiki/entities/Andrej Karpathy.md",
+    "wiki/canvases/shop-maintenance-app-architecture.canvas",
+    "wiki/canvases/main.canvas",
+    "wiki/entities/Shop Maintenance App.md",
+    "wiki/canvases/shop-maintenance-app-architecture.canvas.tmp.27440.6ec41ecf29d2",
+    "wiki/entities/Shop Maintenance App.md.tmp.27440.e7e336707b7c",
+    "wiki/hot.md.tmp.27440.0280f5e41eb4",
+    "wiki/sources/shop-maintenance-app-repo.md.tmp.27440.be2132a0559d",
+    "wiki/entities/kepano-obsidian-skills.md",
+    "wiki/hot.md.tmp.27440.cc41012a6e42",
+    "wiki/sources/cnf-repo.md",
+    "wiki/hot.md.tmp.27440.67ba2e4c5fa1",
+    "wiki/log.md.tmp.27440.ba0c1d160bec",
+    "wiki/hot.md.tmp.27440.f3dac3682970",
+    "wiki/hot.md.tmp.27440.dc2644b73165",
+    "wiki/index.md.tmp.27440.c5de8504be60",
+    "wiki/concepts/Ticketing System Architecture.md",
+    "wiki/sources/shop-maintenance-app-repo.md",
+    "wiki/entities/Confie.md",
+    "wiki/canvases/coach-app-architecture.canvas",
+    "wiki/canvases/clearid-integration-architecture.canvas",
+    "wiki/canvases/claude-obsidian-presentation.canvas",
+    "wiki/canvases/klm-cicd-pipeline.canvas",
+    "wiki/canvases/hb8-cicd-pipeline.canvas",
+    "wiki/canvases/cnf-cicd-pipeline.canvas",
+    "wiki/concepts/Serverless SaaS Architecture.md",
+    "wiki/sources/livret-penthievre-sources.md",
+    "wiki/questions/How does the LLM Wiki pattern work.md",
+    "wiki/entities/ClearID - IAM Interface.md",
+    "wiki/concepts/ClearID Integration Architecture.md",
+    "wiki/entities/ClearID - Symfony API.md",
+    "wiki/entities/ClearID - SMI Interface.md",
+    "wiki/entities/ClearID - MCH Interface.md",
+    "wiki/sources/clearid-directory.md",
+    "_attachments/images/cnf-cicd-pipeline.svg",
+    "_attachments/images/hb8-cicd-pipeline.svg",
+    "_attachments/images/klm-cicd-pipeline.svg",
+    "wiki/canvases/youtube-explainer.canvas",
+    "wiki/canvases/welcome.canvas",
+    "assets/diagrams/multi-writer-locking.svg",
+    "assets/diagrams/hybrid-retrieval.svg"
+  ]
 }

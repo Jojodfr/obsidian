@@ -1,0 +1,148 @@
+<mxfile host="app.diagrams.net" modified="2026-06-03T21:00:00.000Z" agent="claude-obsidian" etag="coach-app-auth" version="26.0.0" type="device">
+  <diagram name="Auth Flow" id="coach-app-auth">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="&lt;h1&gt;Uplift Coach — Authentication Flow&lt;/h1&gt;" style="text;html=1;strokeColor=none;fillColor=none;fontSize=16;fontColor=#FFFFFF;align=center;" vertex="1" parent="1">
+          <mxGeometry x="400" y="10" width="400" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Swimlanes -->
+        <mxCell id="swim-client" value="CLIENT" style="swimlane;horizontal=0;startSize=40;fillColor=#1a1a1a;strokeColor=#333333;fontColor=#3b82f6;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="60" width="1140" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="swim-gateway" value="API GATEWAY" style="swimlane;horizontal=0;startSize=40;fillColor=#1a1a1a;strokeColor=#333333;fontColor=#E07850;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="220" width="1140" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="swim-authz" value="JWT AUTHORIZER" style="swimlane;horizontal=0;startSize=40;fillColor=#1a1a1a;strokeColor=#333333;fontColor=#f59e0b;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="340" width="1140" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="swim-lambda" value="MAIN LAMBDA" style="swimlane;horizontal=0;startSize=40;fillColor=#1a1a1a;strokeColor=#333333;fontColor=#8b5cf6;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="460" width="1140" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="swim-data" value="DATA LAYER" style="swimlane;horizontal=0;startSize=40;fillColor=#1a1a1a;strokeColor=#333333;fontColor=#06b6d4;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="660" width="1140" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- === LOGIN FLOW === -->
+        <mxCell id="login-start" value="POST /auth/login&lt;br&gt;{email, password, accessCode}" style="rounded=1;fillColor=#262626;strokeColor=#3b82f6;strokeWidth=2;fontColor=#FFFFFF;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="110" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="login-public" value="Public route&lt;br&gt;(no auth)&quot; style="text;html=1;strokeColor=none;fillColor=none;fontSize=10;fontColor=#E07850;" vertex="1" parent="1">
+          <mxGeometry x="130" y="235" width="80" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="login-lambda" value="handle_login()&lt;br&gt;&lt;br&gt;1. Rate limit check (IP)&lt;br&gt;2. Fast path: EMAIL# lookup&lt;br&gt;3. Fallback: paginated scan&lt;br&gt;4. Password verify (bcrypt)&lt;br&gt;5. Access code check (alumni)&lt;br&gt;6. Email verified check&lt;br&gt;7. Generate JWT (HS256)&lt;br&gt;8. Sec audit log" style="rounded=1;fillColor=#262626;strokeColor=#8b5cf6;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="320" y="480" width="180" height="160" as="geometry" />
+        </mxCell>
+
+        <mxCell id="login-db-email" value="EMAIL#{email} → userId&lt;br&gt;or scan by email field" style="rounded=1;fillColor=#262626;strokeColor=#06b6d4;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="340" y="700" width="150" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="login-db-blocklist" value="token_blocklist&lt;br&gt;(logout check — not login)" style="rounded=1;fillColor=#262626;strokeColor=#06b6d4;strokeWidth=1;fontColor=#999999;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="340" y="770" width="150" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-login-1" style="endArrow=block;strokeColor=#3b82f6;strokeWidth=2;" edge="1" parent="1" source="login-start" target="login-lambda">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="410" y="135" /><mxPoint x="410" y="460" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-login-2" style="endArrow=block;strokeColor=#8b5cf6;strokeWidth=2;" edge="1" parent="1" source="login-lambda" target="login-db-email">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="login-return" value="200 OK&lt;br&gt;{token, user}" style="rounded=1;fillColor=#16a34a;strokeColor=#16a34a;strokeWidth=2;fontColor=#FFFFFF;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="600" y="110" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-login-3" style="endArrow=block;strokeColor=#8b5cf6;strokeWidth=2;dashed=1;" edge="1" parent="1" source="login-lambda" target="login-return">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="620" y="460" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- === PROTECTED REQUEST === -->
+        <mxCell id="protected-start" value="GET /programs&lt;br&gt;Authorization: Bearer {jwt}" style="rounded=1;fillColor=#262626;strokeColor=#3b82f6;strokeWidth=2;fontColor=#FFFFFF;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="300" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="authz-check" value="JWT Authorizer Lambda&lt;br&gt;&lt;br&gt;1. Extract Bearer token&lt;br&gt;2. HS256 verify&lt;br&gt;3. Check exp&lt;br&gt;4. Blocklist lookup (jti)&lt;br&gt;5. Return isAuthorized" style="rounded=1;fillColor=#262626;strokeColor=#f59e0b;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="600" y="360" width="180" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="authz-db" value="token_blocklist&lt;br&gt;jti lookup&lt;br&gt;DynamoDB get_item" style="rounded=1;fillColor=#262626;strokeColor=#06b6d4;strokeWidth=1;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="640" y="700" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-authz-1" style="endArrow=block;strokeColor=#E07850;strokeWidth=2;" edge="1" parent="1" source="protected-start" target="authz-check">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="690" y="220" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-authz-2" style="endArrow=block;strokeColor=#f59e0b;strokeWidth=2;" edge="1" parent="1" source="authz-check" target="authz-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="protected-lambda" value="handle_get_all_programmes()&lt;br&gt;Visibility filtering by role&lt;br&gt;(admin sees all, coach sees own+org)" style="rounded=1;fillColor=#262626;strokeColor=#8b5cf6;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;spacing=3;" vertex="1" parent="1">
+          <mxGeometry x="850" y="480" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-authz-3" style="endArrow=block;strokeColor=#E07850;strokeWidth=2;" edge="1" parent="1" source="authz-check" target="protected-lambda">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="920" y="460" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="protected-db" value="DynamoDB Query&lt;br&gt;CoachIdIndex GSI&lt;br&gt;or OrgIdIndex GSI" style="rounded=1;fillColor=#262626;strokeColor=#06b6d4;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="880" y="700" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-protected-1" style="endArrow=block;strokeColor=#8b5cf6;strokeWidth=2;" edge="1" parent="1" source="protected-lambda" target="protected-db">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="protected-return" value="200 OK&lt;br&gt;Programs[]" style="rounded=1;fillColor=#16a34a;strokeColor=#16a34a;strokeWidth=2;fontColor=#FFFFFF;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="300" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-protected-2" style="endArrow=block;strokeColor=#8b5cf6;strokeWidth=2;dashed=1;" edge="1" parent="1" source="protected-lambda" target="protected-return">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- === LOGOUT FLOW === -->
+        <mxCell id="logout-start" value="POST /auth/logout&lt;br&gt;Authorization: Bearer {jwt}" style="rounded=1;fillColor=#262626;strokeColor=#3b82f6;strokeWidth=2;fontColor=#FFFFFF;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="530" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="logout-lambda" value="handle_logout()&lt;br&gt;write jti + exp to&lt;br&gt;token_blocklist table" style="rounded=1;fillColor=#262626;strokeColor=#8b5cf6;strokeWidth=2;fontColor=#FFFFFF;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="120" y="700" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-logout-1" style="endArrow=block;strokeColor=#3b82f6;strokeWidth=2;" edge="1" parent="1" source="logout-start" target="logout-lambda">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Security annotations -->
+        <mxCell id="sec-timing" value="⚠ Timing attack fix:&lt;br&gt;_DUMMY_HASH compare&lt;br&gt;on missing users" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#f59e0b;align=left;" vertex="1" parent="1">
+          <mxGeometry x="520" y="500" width="120" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sec-rate" value="🛡 Rate limit:&lt;br&gt;15min lockout after&lt;br&gt;failed attempts" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#f59e0b;align=left;" vertex="1" parent="1">
+          <mxGeometry x="520" y="550" width="120" height="40" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,7 +1,7 @@
 ---
 type: meta
 title: "Operation Log"
-updated: 2026-04-08
+updated: 2026-06-03
 tags:
   - meta
   - log
@@ -24,6 +24,177 @@ Entry format: `## [YYYY-MM-DD] operation | Title`
 Parse recent entries: `grep "^## \[" wiki/log.md | head -10`
 
 ---
+
+## [2026-06-03] ingest | Shop Maintenance App Repository
+- Type: ingest
+- Trigger: user said "ingest this repo" (`~/work/shop-mnt`)
+- Actions: explored repo structure (3 sub-repos: back/front/intl), read READMEs, composer.json, package.json, .gitlab-ci.yml files, Ticket.php, Store.php, User.php entity files
+- New findings:
+  - Hermes Shop Maintenance App — internal ticketing system for boutique maintenance worldwide
+  - **Backend**: Symfony 4.4 + API Platform 2.5.8 + PHP 7.4 + MySQL 5.7 + JWT auth (Lexik)
+  - **Frontend**: Angular 17.3.12 + TypeScript 5.2 + NGXS 18.1.1 + Angular Material + Jest 29.7.0
+  - **Intl**: Separate repo with 8 translation files (AR, EN, FR, IT, JP, KR, ZH, ZZ); only FR, EN, JP enabled in `list_languages.json`
+  - **Intl CI/CD**: Separate pipeline deploying to S3 via `aws s3 sync`; HashiCorp Vault for AWS secrets; 8 stages; only TST and PRD enabled
+  - **Domain model**: Ticket (core, unique ID `DDMMYY-NNN`), Store, User, Vendor, Area/SubArea, Category/SubCategory, TicketStatus, TicketComment, TicketChangeLog, MediaObject, Role
+  - **Security**: RBAC with 4 roles (ADMINISTRATOR, HCT, VENDOR, STAFF), custom voters per entity, closed tickets immutable
+  - **Auth**: Hermes login portal (`fed.hermes.com`) via Amazon Cognito + JWT backend
+  - **Three-stage completion**: vendor → store → HCT finish dates with chronological validation
+  - **Vendor contacts**: Up to 4 contact levels per vendor (main/secondary/third/fourth)
+  - **CI/CD**: GitLab CI with Trivy security scans, SonarQube, Docker builds to Artifact Registry
+  - **Environments**: Integration (Niji GCP VM), Preprod (client mirror), Production (client mirror)
+  - **Dev workflow**: Conventional commits with Husky + Commitlint, Prettier, PHP-CS-Fixer, PHPStan, Rector
+  - **Docker**: docker-compose with nginx, php-fpm, mysql, mailhog, phpMyAdmin for local dev
+  - **Components library**: Angular library project for reusable UI components
+- Pages created: [[shop-maintenance-app-repo]], [[Shop Maintenance App]], [[Ticketing System Architecture]]
+- Pages updated: [[index]], [[hot]], [[log]], [[entities/_index]], [[sources/_index]], [[concepts/_index]], [[Hermes International]]
+- Raw source filed: `.raw/shop-maintenance-app.md`
+
+---
+
+## [2026-06-03] ingest | coach-app Repository
+- Type: ingest
+- Trigger: user said "ingest coach-app" (`~/work/coach-app`)
+- Actions: explored repo structure, read `README.md`, `App.jsx`, `api.js`, `package.json`, `lambda.tf`, `dynamodb.tf`, `deploy.sh`, `lambda_function.py`
+- New findings:
+  - Uplift Coach — fitness coaching SaaS; production at app.upliftcoach.fr
+  - Full-stack: React 19 PWA + Python 3.13 Lambda monolith + DynamoDB single-table
+  - Three role-based views: coach, alumni (students), admin
+  - 3950-exercise library; program & session builder; workout/nutrition/body trackers
+  - **Deep read findings:**
+    - README design tokens are stale: actual accent is `#C8FF00` (Electric Lime), heading font is Teko (not Bebas Neue)
+    - Tailwind 4 uses `@theme` CSS variables in `App.css` — no Tailwind config file
+    - API client is custom fetch wrapper with status-code-to-toast mapping and badge unlock notifications
+    - `localStorage` chosen over `sessionStorage` for token persistence across mobile app switches
+    - Login uses `EMAIL#` reverse-lookup first; falls back to paginated scan for alumni
+    - `_DUMMY_HASH` timing attack mitigation on failed login
+    - CloudFront has strict CSP: HSTS 2yr, X-Frame-Options DENY, script-src with GA/GTM
+    - Stripe: €39/€79/€149 with ~15% annual discount; 14-day trial on upgrade; webhook links subscription post-checkout
+    - Separate images S3 bucket with CORS for direct browser uploads via presigned URLs
+  - Stripe billing with 4 tiers: free (3 students), starter (15), pro (50), business (unlimited)
+  - Multi-tenant by organization — coaches can invite other coaches
+  - PWA features: service worker, install prompt, push notifications, offline banner
+  - JWT auth with separate Lambda authorizer; token blocklist for revocation
+  - DynamoDB: main table (PK/SK + 2 GSIs) + 5 aux tables (invites, billing, blocklist, audit, push tokens)
+  - `deploy.sh` orchestrates full lifecycle: test → terraform → build → S3 → CloudFront invalidate
+  - AWS naming convention `app-uplift-prd-*` prevents collision with marketing site
+  - Security: OWASP A09 log retention, security audit table, rate limiting, CORS strict
+- Pages created: [[coach-app-repo]], [[Uplift Coach]], [[Serverless SaaS Architecture]], [[coach-app-architecture]], [[coach-app-infra]], [[coach-app-auth-flow]], [[coach-app-data-model]]
+- Pages updated: [[index]], [[hot]], [[log]], [[entities/_index]], [[sources/_index]], [[concepts/_index]]
+- Raw source filed: `.raw/coach-app.md`
+
+---
+
+## [2026-06-03] ingest | Livret Penthievre Repository
+- Type: ingest
+- Trigger: user cloned `gitlab.com/hermesintl/hpt/projects/app/source` to `~/work/hpt/source`
+- Actions: explored repo structure, read `.gitlab-ci.yml`, `gitlab-ci-custom.yml`, `README.md`, `CHANGELOG.md`, both `index.html` files, and JS assets
+- New findings:
+  - Static website for Hermes 8 Penthièvre building (8 rue de Penthièvre, 75008 Paris)
+  - Dual site: Public (external landing) + Private (internal employee portal with floor plans)
+  - Vanilla HTML/CSS/JS — no frontend framework
+  - 11 interactive SVG floor plans (RDC, R1-R9, SS1-SS2)
+  - Custom JS for floor plan navigation with cursor tracking and zone info popups
+  - JWT-based OAuth2 auth via Hermes SSO (`login.js`, `jwt-decode.js`)
+  - NeutraText typography (Hermes brand font)
+  - Deploys to AWS S3 via `aws s3 sync src/` (custom CI overrides)
+  - Environments: CHK (auto on MR) and PRD (manual on tag)
+  - S3 buckets: `hsi-penthievre-chk-frontend` / `hsi-penthievre-prd-frontend`
+  - Same Hermes CI/CD template library as other projects
+- Pages created: [[livret-penthievre-sources]], [[8 Penthièvre]]
+- Pages updated: [[index]], [[hot]], [[log]], [[entities/_index]], [[sources/_index]], [[Hermes International]]
+- Raw source filed: `.raw/livret-penthievre-sources.md`
+- Correction: initially reported wrong repo path (`applications-departementales/livret-penthievre/livret-penthievre-sources`); corrected to `hpt/projects/app/source`
+
+---
+
+## [2026-06-03] ingest | ClearID Integration Directory
+- Type: ingest
+- Trigger: user requested same treatment as gitlab repos for `\\cifs-frsel\...\ClearID (interface, plugins)`
+- Actions: explored ~2,500 non-vendor files across 9 directories; read key PHP scripts, config files, and documentation
+- New findings:
+  - ClearID is Genetec's physical access control platform; Hermes account `j3gg5ror3f`
+  - 5 integration interfaces: MCH (contract dates + photos), SMI (access rights + user export), IAM (identity mapping), Symfony API (dev), Outlook plugin
+  - MCH scripts sync contract dates (daily 04:00 cron) and photos from Oracle HCM to ClearID
+  - SMI scripts synchronize identities, locations, schedules, principals bidirectionally
+  - All PHP scripts use OAuth2 client_credentials against `*.eu.clearid.io`; SSL verification disabled
+  - MCH API: Oracle HCM REST with Basic Auth (`svc_MCH_API_ClearID`)
+  - Deployment: Windows (Task Scheduler + PHP 8.2) + Linux (cron + Apache + ODBC)
+  - Symfony 5.4 app (`clearidapi`) in development; PostgreSQL, Docker Compose
+- Pages created: [[clearid-directory]], [[ClearID]], [[ClearID - MCH Interface]], [[ClearID - SMI Interface]], [[ClearID - IAM Interface]], [[ClearID - Symfony API]], [[ClearID Integration Architecture]]
+- Pages updated: [[index]], [[hot]], [[log]], [[entities/_index]], [[concepts/_index]], [[sources/_index]]
+- Diagrams created:
+  - Interactive canvas: `wiki/canvases/clearid-integration-architecture.canvas`
+- Raw source filed: `.raw/clearid-directory.md`
+
+---
+
+## [2026-06-02] ingest | CNF (Confie) repo
+- Type: ingest
+- Trigger: user cloned `gitlab.com/hermesintl/cnf` to `~/work/cnf/app`
+- Actions: analyzed `.gitlab-ci.yml`, `gitlab-ci-custom.yml`, `composer.json`, `Dockerfile`, `README.md`, full `src/` structure
+- New findings:
+  - Confie is a Symfony 7.2 PHP application (full source in repo, unlike KLM)
+  - Deploys to AWS ECS Fargate (not S3 static like HB8/KLM)
+  - Uses Kaniko for container builds (language: container, tool: kaniko)
+  - Container stack: Debian 12 + Apache 2.4 + PHP 8.4 + PostgreSQL 17 + wkhtmltopdf
+  - Auth via Apache mod_auth_openidc (SSO)
+  - Same Hermes CI/CD template library as HB8/KLM
+  - 17 stages (same as KLM), baseline-component with kaniko
+  - Custom jobs: get-secrets-rct/prd, custom_kaniko_build, confie-chk:ecs-*
+- Pages created: [[cnf-repo]], [[Confie]], [[Symfony ECS Deployment]]
+- Pages updated: [[Hermes International]], [[index]], [[entities/_index]], [[concepts/_index]], [[sources/_index]], [[hot]]
+- Diagrams created:
+  - SVG: `_attachments/images/cnf-cicd-pipeline.svg`
+  - Interactive canvas: `wiki/canvases/cnf-cicd-pipeline.canvas` (Obsidian Canvas with clickable wiki links)
+- Raw source filed: `.raw/cnf-repo.md`
+
+---
+
+## [2026-06-02] ingest | KLM (Kellymorphose) repo
+- Type: ingest
+- Trigger: user cloned `gitlab.com/hermesintl/klm` to `~/work/klm`
+- Actions: analyzed `.gitlab-ci.yml` and `gitlab-ci-custom.yml`; explored compiled Vue.js SPA structure
+- New findings:
+  - Kellymorphose is a Vue.js SPA (compiled bundles only, no source in repo)
+  - Uses same Hermes CI/CD template library as HB8
+  - Dual deployment: standard S3 component + CIFS mount for media assets
+  - Auth: Hermes SSO / OAuth2 (not JWT like HB8)
+  - Only CHK and PRD environments enabled
+- Pages created: [[klm-repo]], [[Kellymorphose]], [[Vue.js SPA Static Deployment]]
+- Pages updated: [[Hermes International]], [[index]], [[entities/_index]], [[concepts/_index]], [[sources/_index]]
+- Diagrams created:
+  - SVG: `_attachments/images/klm-cicd-pipeline.svg`
+  - Interactive canvas: `wiki/canvases/klm-cicd-pipeline.canvas` (Obsidian Canvas with clickable wiki links)
+- Raw source filed: `.raw/klm-repo.md`
+
+---
+
+## [2026-06-02] save | HB8 CI/CD pipeline deep dive
+- Type: analysis
+- Trigger: user requested CI/CD diagram
+- Actions: read 3x `.gitlab-ci.yml` files; created SVG architecture diagram; discovered dual deployment paths
+- New findings:
+  - Project is "Haute Bijouterie 8" (high jewelry), not just a color tool
+  - Two deployment paths: standard (JFrog → S3 component) and custom (CIFS mount → aws s3 sync)
+  - Security stack: GitGuardian, SonarQube, Vault, AWS OIDC, JFrog Artifactory
+- Diagram: `_attachments/images/hb8-cicd-pipeline.svg`
+- Session note updated: [[2026-06-02-hb8-ingestion-session]]
+
+## [2026-06-02] save | HB8 repo ingestion session
+- Type: session
+- Scope: vault health check + repo ingestion + save pipeline demonstration
+- Pages created: 6 (5 from ingest + 1 session note)
+- New session note: [[2026-06-02-hb8-ingestion-session]]
+- Key topics: Nuxt.js static deployment, two-repo architecture, JWT client-side auth, built-output vs source-code ingestion
+- All indexes updated: index, log, hot, sources/_index, entities/_index, concepts/_index
+
+## [2026-06-02] ingest | HB8 App Repository
+- Type: codebase ingestion
+- Source: `~/work/hb8/app`
+- Pages created: 5 (1 source, 1 entity, 3 concepts)
+- Key findings: Nuxt.js static app for Hermes International; two-repo architecture; JWT client-side auth; Excel processing; custom Garamond/Memphis web fonts
+- New pages: [[hb8-app-repo]], [[Hermes International]], [[Two-Repo Architecture]], [[Nuxt.js Static Deployment]], [[JWT Auth in Static Sites]]
+- Stack: Nuxt.js (Vue), GitLab CI/CD, AWS static hosting
 
 ## [2026-04-24] save | v1.6.0 public release notes (Teams, Karpathy-style)
 - Type: release doc + visual assets

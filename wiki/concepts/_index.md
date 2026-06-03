@@ -1,7 +1,7 @@
 ---
 type: meta
 title: "Concepts Index"
-updated: 2026-04-07
+updated: 2026-06-03
 tags:
   - meta
   - index
@@ -39,5 +39,14 @@ All concept pages — ideas, patterns, and frameworks extracted from sources.
 - [[Query-Time Retrieval]]: query synthesis with citations, complementary to Obsidian search (developing)
 
 ---
+
+- [[Two-Repo Architecture]] — separating built app from infrastructure-as-code (status: mature)
+- [[Nuxt.js Static Deployment]] — static generation with SPA fallback and performance techniques (status: mature)
+- [[Vue.js SPA Static Deployment]] — compiled Vue.js bundles to S3, client-side routing (status: mature)
+- [[Symfony ECS Deployment]] — containerized Symfony to AWS ECS Fargate via Kaniko (status: mature)
+- [[JWT Auth in Static Sites]] — client-side JWT pattern without backend (status: developing)
+- [[ClearID Integration Architecture]] — Hermes systems integration with Genetec ClearID; data flows, auth patterns, deployment (status: current)
+- [[Serverless SaaS Architecture]] — React PWA + Lambda monolith + DynamoDB single-table on AWS; distilled from [[Uplift Coach]] (status: developing)
+- [[Ticketing System Architecture]] — Symfony API Platform + Angular SPA pattern for internal maintenance ticketing; from [[Shop Maintenance App]] (status: developing)
 
 ## Add new concepts here as they are extracted from sources.

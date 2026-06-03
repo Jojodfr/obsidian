@@ -92,3 +92,7 @@ After cutting a new release (git tag + `gh release create`), run:
 ```
 
 This generates a blog post on https://agricidaniel.com/blog/, handles cover image generation, SEO metadata, FAQ schema, internal linking, sitemap/llms.txt updates, Vercel deployment, and Google indexing.
+
+## Hooks (Windows)
+
+The hook scripts in `hooks/hooks.json` use bash commands that do not run on Windows. On Windows, use `scripts/wiki-lock.ps1` and `bin/setup-windows.ps1` instead.

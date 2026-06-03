@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash scripts/*.sh)",
+      "Bash(bash bin/*.sh)",
+      "Bash(git *)",
+      "PowerShell(scripts/*.ps1)",
+      "PowerShell(bin/*.ps1)",
+      "PowerShell(claude *)",
+      "PowerShell(claude-obsidian *)",
+      "PowerShell(winget *)",
+      "PowerShell(npm *)",
+      "PowerShell(node *)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Import-Module *)"
+    ]
+  }
+}
