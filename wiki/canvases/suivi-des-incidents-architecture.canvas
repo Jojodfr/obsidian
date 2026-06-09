@@ -1,0 +1,22 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Suivi des Incidents — Architecture\n**Hermès Intl** | Symfony 6.2 | MariaDB | S3 | ECS Fargate\nprojet-type-v6.0.1","x":-100,"y":-500,"width":760,"height":100},
+		{"id":"stack","type":"text","text":"### Pile\n\n| Couche | Technologie |\n|--------|-------------|\n| Symfony | 6.2.* |\n| PHP | 8.2 |\n| ORM | Doctrine 2.12 attributes # |\n| Templates | Twig 2/3 |\n| PDF | wkhtmltopdf + KnpSnappy |\n| Excel | PHPSpreadsheet |\n| Auth | Symfony Security Bundle |\n| Email | Mails entity batch queue |\n| Upload | local (dev) + S3 (prd) |\n\nDual stockage fichiers :\nlocal / S3 + presigned URL","x":-660,"y":-300,"width":300,"height":380,"color":"#3b82f6"},
+		{"id":"controllers","type":"text","text":"### Contrôleurs (17)\n\nDomaine SDI :\n- IncidentController (full CRUD + PJ + S3)\n- AlerteController\n- StatistiqueController\n\nSystème :\n- Accueil, Login, Registration\n- Error, FilAriane, GenPdf\n- ImportExcel, Upload, Test\n\nAdmin/BO :\n- Admin, CategoriesTypes, RefData, User\n- Glossaire, Groupe, Log, Menu, Param","x":-260,"y":-280,"width":300,"height":340,"color":"#16a34a"},
+		{"id":"security","type":"text","text":"### Sécurité\n\n| Rôle | Pouvoirs |\n|------|----------|\n| ROLE_USER | Déclarer, voir ses incidents |\n| ROLE_AUDIT | Exporter, supprimer tout |\n| ROLE_ADMIN | Fonctions admin |\n| ROLE_SUPER_ADMIN | Accès total |\n\nConfidentialité :\n- N = standard\n- C = confidentiel\n- R = privé (getListePrive)\n\nVoters Symfony :\nview, edit, delete\n|
+          \net emails\nfiltrées niveau","x":220,"y":-280,"width":280,"height":300,"color":"#f59e0b"},
+		{"id":"storage","type":"text","text":"### Stockage fichiers\n\n| Env | Backend | Accès |\n|-----|---------|-------|\n| Dev | local public/uploads/ | Chemin direct |\n| Prd | S3 presigned URL | +3600s |\n| Mixte | private / public | FileUploader |\n\nGestion PJ :\n- Upload tmp/{user}\n- Sauvegarde -> déplacement\n- S3 : listObjectsV2 + presigned\n- Local : rename()","x":660,"y":-280,"width":260,"height":260,"color":"#06b6d4"},
+		{"id":"commands","type":"text","text":"### Commandes (7)\n\n- batch:envoi-erreur\n- batch:mails (file d attente)\n- division:fichier-pj\n- import:csvIncident (AS400)\n- initial:users\n- reclassement:incidents\n- refdatas:glossaire","x":-660,"y":160,"width":280,"height":240,"color":"#8b5cf6"},
+		{"id":"cicd","type":"text","text":"### CI/CD Standard\n\n14 étages GitLab CI :\n- Docker build (Harbor)\n- SonarQube + gitleaks\n- ECS Fargate deploy\n- S3 config copy\n\nenvironnement.properties","x":-260,"y":160,"width":260,"height":200,"color":"#E07850"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Suivi des Incidents]]\n- [[Hermès International]]\n- [[Hermès CI-CD Pipeline]]\n- [[Monodyssee App]]\n- [[ClearID]]","x":220,"y":160,"width":200,"height":140}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"stack","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"controllers","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"security","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"storage","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"stack","fromSide":"bottom","toNode":"commands","toSide":"top","color":"#8b5cf6"},
+		{"id":"e6","fromNode":"controllers","fromSide":"bottom","toNode":"cicd","toSide":"top","color":"#E07850"},
+		{"id":"e7","fromNode":"security","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

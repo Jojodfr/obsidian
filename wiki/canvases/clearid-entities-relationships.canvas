@@ -1,0 +1,22 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# ClearID — Entités + Interfaces\n**Hermès Intl** | Genetec ClearID\n5 interfaces + API Symfony + site reference","x":-80,"y":-500,"width":720,"height":100},
+		{"id":"core","type":"text","text":"### ClearID (Core)\n\nPlateforme Genetec\nContrôle d accès physique\n*.eu.clearid.io\n\nEntités :\n- Identities\n- IdentityPrincipals\n- Locations\n- Sites\n- Accesses\n- Schedules\n- Pictures","x":-200,"y":-300,"width":280,"height":240,"color":"#3b82f6"},
+		{"id":"mch","type":"text","text":"### ClearID - MCH Interface\n\nSource : Oracle HCM (MCH)\n\nScripts :\n- UpdateContractDatesClearId.php\n- AddMissingPhotoClearId.php\n\nDonnées :\n- Dates contrat\n- Photos employés\n\nDirection : MCH -> ClearID\nSchedule : 04:00 quotidien","x":-560,"y":0,"width":280,"height":220,"color":"#16a34a"},
+		{"id":"smi","type":"text","text":"### ClearID - SMI Interface\n\n14 scripts PHP 8.2\nfrsellpappepa02\n\nSynchronisation :\n- Identities (synchronize)\n- Access rights (PATCH)\n- Locations + schedules\n- Prestataires SST\n\nAudit :\n- ListIdentiesClearId.php\n- ListSitesLocationsSchedulesClearId.php","x":-200,"y":0,"width":280,"height":240,"color":"#f59e0b"},
+		{"id":"iam","type":"text","text":"### ClearID - IAM Interface\n\nMapping : 20 champs\n(iam gnt.txt)\n\n| Champ | Chemin ClearID |\n|-------|----------------|\n| nom | identities.firstName |\n| prénom | identities.lastName |\n| IGG | systemData.externalId |\n| contrat | companyData.workerType |\n| login_atlas | customFields... |\n\nSource : InfoCentre + RH","x":200,"y":0,"width":280,"height":240,"color":"#06b6d4"},
+		{"id":"symfony","type":"text","text":"### ClearID - Symfony API\n\nSymfony 5.4\nAPI layer interne\n\nSSL :\nCURLOPT_SSL_VERIFYHOST/PERI => false\n(known config)\n\nEndpoints :\n- Identities CRUD\n- Accesses query\n- Pictures upload","x":560,"y":0,"width":240,"height":200,"color":"#E07850"},
+		{"id":"site","type":"text","text":"### ClearID - Site + Location\n\nRéférence :\n- Sites ClearID\n- Locations\n- Schedules\n\nDonnées brutes :\n- clearid-sites-locations-schedules.csv\n- clearid-array-locations-sites-prod.php\n\nMapping IAM :\nExcel locations_iam_mapping.xlsx","x":-560,"y":300,"width":300,"height":180,"color":"#8b5cf6"},
+		{"id":"links","type":"text","text":"### Liens\n- [[ClearID]]\n- [[ClearID Integration Architecture]]\n- [[Hermès International]]\n- [[Infocentre]]\n- [[EHS]]","x":200,"y":300,"width":200,"height":120}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"core","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"core","fromSide":"bottom","toNode":"mch","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"core","fromSide":"bottom","toNode":"smi","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"core","fromSide":"bottom","toNode":"iam","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"core","fromSide":"bottom","toNode":"symfony","toSide":"top","color":"#E07850"},
+		{"id":"e6","fromNode":"mch","fromSide":"bottom","toNode":"site","toSide":"top","color":"#8b5cf6"},
+		{"id":"e7","fromNode":"iam","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"},
+		{"id":"e8","fromNode":"symfony","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

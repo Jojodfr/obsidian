@@ -1,0 +1,19 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# EHS — Architecture\n**Hermès Intl** | PHP + Apache | MySQL dual | Cognito | ECS Fargate","x":-100,"y":-480,"width":720,"height":100},
+		{"id":"stack","type":"text","text":"### Pile\n\n| Couche | Technologie |\n|--------|-------------|\n| Runtime | PHP (Apache + mod_php) |\n| Web | Apache 2.4 |\n| Conteneur | Docker (mono-container) |\n| Health | Endpoint interne |\n| DB1 | MySQL schema ehs |\n| DB2 | MySQL schema phphiehs |\n| Auth | AWS Cognito OAuth2 |\n| CI/CD | Hermès baseline + SonarQube |\n| Scans | GitGuardian + SonarQube |\n\nVersion active : v1.11.0\nDate : 2026-04-27","x":-620,"y":-300,"width":340,"height":360,"color":"#3b82f6"},
+		{"id":"deploy","type":"text","text":"### Déploiement\n\nModèle : Hermès standard ECS\n- GitLab CI baseline-component\n- Docker build + push Harbor|JFrog\n- SonarQube quality gate\n- Semantic release\n- ECS Fargate via cicd-aws-ecs\n\nServeurs :\n frsell{d|t|p}app{ehs}{NN}.atlas.hermes\n d = DEV, t = TEST, p = PRD","x":-200,"y":-300,"width":340,"height":300,"color":"#16a34a"},
+		{"id":"auth","type":"text","text":"### Authentification\n\nOAuth2 via AWS Cognito\n- Self-enrollment autorisé\n- Pas de SAML mellon\n- Sessions applicatives\n\nAccès physiques :\n- Évaluation campagnes EHS\n- Pièces jointes audits\n- Import / export données","x":260,"y":-300,"width":300,"height":260,"color":"#f59e0b"},
+		{"id":"data","type":"text","text":"### Données\n\nDual-schema MySQL :\n- ehs : tables métier\n- phphiehs : tables communes\n\nTypes :\n- Évaluations risques\n- Évaluations culture\n- Campagnes EHS\n- Pièces jointes audit\n- Références d évaluation","x":-620,"y":120,"width":300,"height":240,"color":"#8b5cf6"},
+		{"id":"compare","type":"text","text":"### Similitudes\n\n| Aspect | EHS | DOC4 | Shop Maint |\n|--------|-----|--------|-----------|\n| Langage | PHP | PHP 7.4 | PHP |\n| Base | MySQL | MySQL | MySQL |\n| Auth | Cognito | Cognito | SAML |\n| Déploiement | ECS | ECS | EC2 manuel |\n| CI/CD | Standard | Standard | - |\n\nFamille : PHP + Apache + ECS","x":-200,"y":120,"width":300,"height":260,"color":"#E07850"},
+		{"id":"links","type":"text","text":"### Liens\n- [[EHS]]\n- [[Hermès International]]\n- [[Hermès CI-CD Pipeline]]\n- [[DOC4]]\n- [[ClearID]]","x":260,"y":120,"width":240,"height":180}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"stack","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"deploy","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"auth","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"stack","fromSide":"bottom","toNode":"data","toSide":"top","color":"#8b5cf6"},
+		{"id":"e5","fromNode":"deploy","fromSide":"bottom","toNode":"compare","toSide":"top","color":"#E07850"},
+		{"id":"e6","fromNode":"auth","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

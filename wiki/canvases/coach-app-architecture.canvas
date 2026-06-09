@@ -8,12 +8,12 @@
 		{"id":"gateway","type":"text","text":"### API Gateway\nHTTP v2\n\nCORS: strict\nAllowed origins:\n- app.upliftcoach.fr\n- localhost:5173","x":-20,"y":-390,"width":240,"height":230,"color":"#E07850"},
 		{"id":"ses","type":"text","text":"### AWS SES\n\nTransactional emails\nnoreply@uplift.ryvolabs.dev\n\nInbound forwarding\nSES → Gmail","x":70,"y":280,"width":390,"height":220,"color":"#ec4899"},
 		{"id":"authorizer","type":"text","text":"### JWT Authorizer\n`app-uplift-prd-authorizer`\n\n- Token validation\n- Blocklist check\n- Returns IAM policy\n\nPython 3.13 Lambda\n10s timeout / 128MB","x":-150,"y":-55,"width":310,"height":270,"color":"#f59e0b"},
-		{"id":"client","type":"text","text":"### Client\n\n**React 19 PWA**\n- Vite + Tailwind 4\n- Zustand (state)\n- Framer Motion\n- Service Worker\n\nLazy-loaded routes\nRole-based guards\nInstallable / Offline\nPush notifications","x":-380,"y":-510,"width":230,"height":350,"color":"#3b82f6"},
 		{"id":"cron","type":"text","text":"### EventBridge\n\n**Weekly Bilan**\nSundays 12:00 UTC\n`detail-type: weekly-bilan`\n\n**Reminders**\nBilan reminders\nWorkout reminders","x":-35,"y":-660,"width":270,"height":240,"color":"#E07850"},
 		{"id":"title","type":"text","text":"# Uplift Coach Architecture\n**Fitness Coaching SaaS** | React 19 PWA + Python 3.13 Lambda + DynamoDB | AWS via Terraform","x":-400,"y":-800,"width":900,"height":100},
 		{"id":"naming","type":"text","text":"### AWS Naming\n\n`owner-project-env-resource`\n\n**App:**\n`app-uplift-prd-api`\n`app-uplift-prd-authorizer`\n`app-uplift-prd-backup`\n\n**Marketing:**\n`cto-uplift-prd-*`","x":-395,"y":280,"width":400,"height":280,"color":"#2D2D2D"},
 		{"id":"stripe","type":"text","text":"### Stripe\n\nCheckout sessions\nCustomer portal\nSubscription webhooks\n\n**Tiers:**\nFree (3) / Starter (15)\nPro (50) / Business (∞)","x":500,"y":470,"width":200,"height":180,"color":"#9333ea"},
-		{"id":"s3","type":"text","text":"### S3 + CloudFront\n\nStatic PWA hosting\nHashed assets: immutable\nHTML/SW: no-cache\n\nUser images bucket\nPresigned upload URLs","x":640,"y":150,"width":300,"height":240,"color":"#16a34a"}
+		{"id":"s3","type":"text","text":"### S3 + CloudFront\n\nStatic PWA hosting\nHashed assets: immutable\nHTML/SW: no-cache\n\nUser images bucket\nPresigned upload URLs","x":640,"y":150,"width":300,"height":240,"color":"#16a34a"},
+		{"id":"client","type":"text","text":"### Client\n\n**React 19 PWA**\n- Vite + Tailwind 4\n- Zustand (state)\n- Framer Motion\n- Service Worker\n\nLazy-loaded routes\nRole-based guards\nInstallable / Offline\nPush notifications","x":-400,"y":-585,"width":230,"height":390,"color":"#3b82f6"}
 	],
 	"edges":[
 		{"id":"e1","fromNode":"client","fromSide":"right","toNode":"gateway","toSide":"left","color":"#3b82f6"},

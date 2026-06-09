@@ -1,0 +1,23 @@
+{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Monodyssee — Fonctionnel\n**Hermès Intl** | CFA MyCampH EDSF | Portail formation\nCampagne -> Bilan (SF/SE) -> Auto-éval -> Attestation -> Livret","x":-100,"y":-560,"width":820,"height":120},
+		{"id":"bilan","type":"text","text":"### 2. Bilan remplissage\n\nSavoir-Faire (BilanSf) :\n- compétences techniques\n- grille critérée\n\nSavoir-Être (BilanSe) :\n- 9 items évaluation\n\nRéponses structurées \nà Questions\n\nAuto-évaluation :\napprenant évalue son niveau\n\nRich text :\nCKEditor commentaires\nformateur + élève","x":-240,"y":-340,"width":300,"height":280,"color":"#16a34a"},
+		{"id":"formateur","type":"text","text":"### 3. Revue formateur\n\nPoints forts\nAxes d amélioration\n\nCommentaires :\n- CKEditor rich text\n- Note générale\n- Note diplôme\n\nSignature formateur\n(sign_forma)\n\nNote : échelle 5 niveaux\nidentique CAP / Jalons","x":220,"y":-340,"width":260,"height":260,"color":"#f59e0b"},
+		{"id":"eleve","type":"text","text":"### 4. Revue élève\n\nVisualisation bilan\nVisuEleve (acquittement)\n\nSignature élève\n(signEleve)\n\nValidation finale\n-> statut clôturé","x":640,"y":-340,"width":220,"height":200,"color":"#06b6d4"},
+		{"id":"attestation","type":"text","text":"### 5. Attestation\n\nCertificat fin de formation\n\n- Parcours template\n- Rich text corps (CKEditor)\n- Image de fond\n- Export PDF\n\nGénéré automatique\npost-campagne","x":-680,"y":100,"width":280,"height":320,"color":"#E07850"},
+		{"id":"livret","type":"text","text":"### 6. Livret de suivi\n\nAgrégation :\n- Bilans périodiques\n- Jalons techniques\n- Attestations\n- Commentaires formateurs\n- Historique complet\n\nEntité : LivretDeSuivi\n\nSuivi progression\nsur toute la formation","x":-240,"y":100,"width":260,"height":240,"color":"#8b5cf6"},
+		{"id":"export","type":"text","text":"### 7. Export + CRON\n\nGenExcelController :\n- Excel (PHPSpreadsheet)\n- CSV (League CSV)\n\nGenPdfController :\n- PDF wkhtmltopdf\n\nExportActions :\n- audit trail exports\n- durée, taux succès, erreurs\n\nCRON :\n- CleanupExportActionsCommand\n- DatabaseExportCommand","x":220,"y":100,"width":280,"height":240,"color":"#16a34a"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Monodyssee]]\n- [[Savoir-faire]]\n- [[CFA Hermès Evaluation Framework]]\n- [[Formation Hermès]]\n- [[Hermès International]]","x":640,"y":100,"width":220,"height":160},
+		{"id":"campagne","type":"text","text":"### 1. Création campagne\n\nSélection :\n- École + Promo + Module(s)\n- Jalon + Questionnaire\n\nAuto-génération :\n- Bilan (Savoir-Faire + Savoir-Être)\npar apprenant\n\nExport : traçé dans\nExportActions (audit trail)","x":-760,"y":-360,"width":360,"height":400,"color":"#3b82f6"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"campagne","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"bilan","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"formateur","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"eleve","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"campagne","fromSide":"bottom","toNode":"attestation","toSide":"top","color":"#E07850"},
+		{"id":"e6","fromNode":"bilan","fromSide":"bottom","toNode":"livret","toSide":"top","color":"#8b5cf6"},
+		{"id":"e7","fromNode":"formateur","fromSide":"bottom","toNode":"export","toSide":"top","color":"#16a34a"},
+		{"id":"e8","fromNode":"eleve","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

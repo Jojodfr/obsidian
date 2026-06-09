@@ -1,0 +1,26 @@
+{
+	"nodes":[
+		{"id":"purchase","type":"text","text":"### 1. Ordres d'Achat (Cap001t)\n\n| Champ | Signification |\n|-------|---------------|\n| numOa | Numéro commande |\n| libTannerie | Tannerie |\n| codEspece | Espèce (Niloticus...) |\n| codFinit | Finition |\n| nbPeauxCmd | Quantité peaux |\n| nbSkuPrv | Prévision SKU |\n\nProcessus : Tannerie expédie\n-> réception -> saisie CAP001T\n-> planification production.","x":-820,"y":-420,"width":380,"height":440,"color":"#3b82f6"},
+		{"id":"title","type":"text","text":"# Captation Croco — Fonctionnel\n**Hermes Intl** | Traçabilité Cuir Crocodile + Contrôle Qualité\nTannerie -> Teinte -> QC -> Défauts -> Export S3","x":-280,"y":-620,"width":800,"height":120},
+		{"id":"teinte","type":"text","text":"### 2. Teintes (Capteinte)\n\nClé composite 4 parties :\n- Couleur (codColoris)\n- Finition (libFinit)\n- Fournisseur (fournisseur)\n- Espèce (espece)\n-> Teinte (codTeinte)\n\nRègle : même couleur peut\nexiger formulations différentes\nselon finition x fournisseur x espèce.\n\nExemple :\n  Rouge H + Matte + Tannerie X\n  + Niloticus -> RN-47","x":-380,"y":-410,"width":440,"height":500,"color":"#f59e0b"},
+		{"id":"fcc","type":"text","text":"### 3. FCC — Contrôle Cuir\n\nFCCController (48KB)\n\nPremier quality gate réception :\n- Vérification espèce vs commande\n- Vérification finition\n- Mesures dimensions peau\n- Évaluation surface\n- Génération PDF contrôle (DOMPDF)\n\nSortie : PDF FCC lié à\ncommande + lot tannerie.","x":100,"y":-360,"width":360,"height":400,"color":"#16a34a"},
+		{"id":"fcp","type":"text","text":"### 4. FCP — Contrôle Production\n\nFCPController (13KB)\n\nPoints de contrôle en cours :\n- Alignement patron découpe\n- Qualité couture\n- Traitement bords\n- Fixation quincaillerie\n- Uniformité teinture\n\nChaque point référence\nFCC ID + étape production.","x":500,"y":-420,"width":400,"height":400,"color":"#06b6d4"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Captation Croco]]\n- [[Captation Croco App]]\n- [[Hermès International]]\n- [[Infocentre]]\n- [[ClearID]]","x":800,"y":90,"width":240,"height":220},
+		{"id":"fdr","type":"text","text":"### 5. FDR — Défauts + Réparations\n\nFDRController (30KB)\n\nGestion défauts :\n\n| Champ | Rôle |\n|-------|------|\n| libCategorie | Nom catégorie |\n| cleCategorie | Clé courte |\n| isActif | Actif O/N |\n\nWorkflow :\n1. Défaut identifié -> catégorie\n2. Sévérité évaluée\n3. Décision : corriger / déclasser / rejeter\n4. Action enregistrée\n5. Réinspection\n\nSortie : PDF FDR + stats\n\nDéfauthèque : taxonomie complète.","x":-880,"y":160,"width":320,"height":700,"color":"#8b5cf6"},
+		{"id":"s3","type":"text","text":"### 6. Export S3\n\nPartage automatisé\n\nChangelog : 15+ commits S3\n- Modif Export vers S3\n- Correction credentials s3\n- Analytics production\n\nAWS SDK PHP :\n- Opérations bucket\n- Presigned URLs\n- Rotation credentials\n\nAlimente : ERP, dashboards\nqualité, reporting financier.","x":-400,"y":240,"width":300,"height":520,"color":"#E07850"},
+		{"id":"mail","type":"text","text":"### 7. Emails\n\n20+ entrées changelog\n\n| Type | Déclencheur |\n|------|-------------|\n| Alertes QC | Seuil défauts dépassé |\n| Résumés journaliers | Cron (cronmail) |\n| Confirmation export | S3 batch terminé |\n| Demandes approbation | Réparation en attente |\n\nmsmtp client SMTP\nSymfony Mailer templates","x":0,"y":260,"width":360,"height":440,"color":"#888888"},
+		{"id":"delivery","type":"text","text":"### 8. Livraison (Vuem3t)\n\n| Champ | Sens |\n|-------|------|\n| statutLivraison | Statut |\n| m3Bp | Référence BP |\n| compteClientLiv | Compte client |\n| nomClient | Nom client |\n| codePaysIso | Pays destination |\n| codStyle | Code style |\n| codeSku | SKU |\n| origFab | Origine fabric. |\n\nVue read-only : agrégation\npour logistique + planning.","x":460,"y":160,"width":280,"height":460,"color":"#16a34a"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"purchase","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"teinte","toSide":"top","color":"#f59e0b"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"fcc","toSide":"top","color":"#16a34a"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"fcp","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"purchase","fromSide":"bottom","toNode":"fdr","toSide":"top","color":"#8b5cf6"},
+		{"id":"e6","fromNode":"teinte","fromSide":"bottom","toNode":"s3","toSide":"top","color":"#E07850"},
+		{"id":"e7","fromNode":"fcc","fromSide":"bottom","toNode":"mail","toSide":"top","color":"#888888"},
+		{"id":"e8","fromNode":"fcp","fromSide":"bottom","toNode":"delivery","toSide":"top","color":"#16a34a"},
+		{"id":"e9","fromNode":"fdr","fromSide":"right","toNode":"s3","toSide":"left","color":"#8b5cf6"},
+		{"id":"e10","fromNode":"s3","fromSide":"right","toNode":"delivery","toSide":"left","color":"#E07850"}
+	]
+}

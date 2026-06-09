@@ -1,0 +1,23 @@
+{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Captation Croco — Architecture\n**Hermès Intl** | Symfony 6.4 | PHP 8.2 | MariaDB | AWS ECS | Entra ID","x":-120,"y":-560,"width":840,"height":120},
+		{"id":"stack","type":"text","text":"### Pile\n\n| Couche | Technologie |\n|--------|-------------|\n| OS | Debian 12 |\n| Web | Apache 2.4 + SAML mellon |\n| PHP | 8.2 |\n| Framework | Symfony 6.4 LTS |\n| ORM | Doctrine 2.16 |\n| DBAL | Doctrine DBAL 2.13.9 |\n| PDF | DOMPDF 2.0 |\n| Excel | PHPSpreadsheet 1.29 |\n| AWS SDK | aws-sdk-php |\n| Auth | Microsoft Entra ID |\n\nFrontend : Webpack Encore + Bootstrap 5.3 + DataTables + jQuery","x":-700,"y":-340,"width":360,"height":520,"color":"#E07850"},
+		{"id":"container","type":"text","text":"### Conteneur\n\n- Debian 12\n  - Apache 2.4 port 80\n  - PHP 8.2 + Symfony + Doctrine\n  - DOMPDF, PHPSpreadsheet, AWS SDK\n  - msmtp client SMTP\n  - Composer install build-time\n  - Superviseur (Apache + cron)\n\nBuild : composer install --no-scripts --no-dev\nPorts : 80, 8080, 8081, 8082, 8083","x":-240,"y":-320,"width":360,"height":420,"color":"#3b82f6"},
+		{"id":"deploy","type":"text","text":"### Déploiement Personnalisé\n\nNon standard : mutation brute ECS\n\n1. Build Docker -> ECR via OIDC\n2. Lire environments/ENV/env.properties\n3. Convertir en JSON array\n4. aws ecs describe-task-definition\n5. jq mutations : image, env vars\n6. aws ecs register-task-definition\n7. aws ecs update-service\n8. aws ssm put-parameter\n\nAuth : OIDC GITLAB_OIDC_TOKEN -> IAM role","x":260,"y":-320,"width":360,"height":440,"color":"#f59e0b"},
+		{"id":"infra","type":"text","text":"### AWS\n\n| Env | Compte | Région | Déclencheur |\n|-----|--------|--------|-------------|\n| CHK | 225989339017 | eu-west-3 | Auto main |\n| PRD | 588738579322 | eu-west-3 | Manuel main |\n| DEV | - | - | Désactivé |\n| TST | - | - | Désactivé |\n| ACC | - | - | Désactivé |\n\nSSM : repository-url, cluster-name,\nservice-name, task-definition-arn\n\nResource Groups : chk, prd","x":720,"y":-300,"width":420,"height":440,"color":"#16a34a"},
+		{"id":"compose","type":"text","text":"### Dév Local\n\n- app Symfony\n- lb nginx port 443\n- mydb MariaDB LTS\n- adminer port 9090\n\nSAML mock via idp_metadata_docker.xml","x":-240,"y":180,"width":380,"height":260,"color":"#06b6d4"},
+		{"id":"compare","type":"text","text":"### CI/CD vs Standard Hermès\n\n| Aspect | Captation | Standard |\n|--------|-----------|----------|\n| ECS | Custom jq | cicd-aws-ecs |\n| Secrets | SSM | HashiCorp Vault |\n| Registry | AWS ECR | Harbor |\n| Envs | CHK+PRD | dev+tst+chk+acc+prd |\n\nDivergence : bypass cicd-aws-ecs\nMutation brute task def","x":260,"y":240,"width":400,"height":360,"color":"#888888"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Captation Croco]]\n- [[Captation Croco App]]\n- [[Hermès CI/CD Pipeline]]\n- [[Hermès International]]","x":740,"y":180,"width":300,"height":220},
+		{"id":"auth","type":"text","text":"### Authentification\n\nPrincipale : Microsoft Entra ID SAML\n- IdP : login.microsoftonline.com\n- Tenant : e4a52391-cb73-4feb-b3f5-aec2ef5593bb\n- App CHK : d23bbbef-03ce-4f3b-9cd0-a1010e7aaf2a\n- App PRD : befd33e6-c6e4-4818-9f97-24509926e1ef\n\nFallback : Symfony User\n- temporaire, local dev","x":-820,"y":270,"width":440,"height":340,"color":"#8b5cf6"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"stack","toSide":"top","color":"#E07850"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"container","toSide":"top","color":"#3b82f6"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"deploy","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"infra","toSide":"top","color":"#16a34a"},
+		{"id":"e5","fromNode":"stack","fromSide":"bottom","toNode":"auth","toSide":"top","color":"#8b5cf6"},
+		{"id":"e6","fromNode":"container","fromSide":"bottom","toNode":"compose","toSide":"top","color":"#06b6d4"},
+		{"id":"e7","fromNode":"deploy","fromSide":"bottom","toNode":"compare","toSide":"top","color":"#888888"},
+		{"id":"e8","fromNode":"infra","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

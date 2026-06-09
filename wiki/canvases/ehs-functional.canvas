@@ -1,0 +1,19 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# EHS — Fonctionnel\n**Hermès Intl** | Environmental Health + Safety\nCampagnes -> Évaluations -> Audits -> Pièces jointes","x":-100,"y":-480,"width":720,"height":100},
+		{"id":"campaign","type":"text","text":"### 1. Campagnes EHS\n\nTypes de campagnes :\n- Évaluation risques (risk assessments)\n- Évaluation culture (culture safety)\n\nGestion :\n- Création campagne par site\n- Attribution référentiels\n- Planification périodique\n\nSites : production + retail\nHermès France + international","x":-620,"y":-300,"width":300,"height":260,"color":"#3b82f6"},
+		{"id":"eval","type":"text","text":"### 2. Évaluations\n\n| Type | Contenu |\n|------|---------|\n| Risques | Postes, EPI, procédures |\n| Culture | Connaissance + comportements |\n\nRéponses :\n- QCM structuré\n- Score agrégé\n- Historique par site\n\nv1.9.0 : suppression\nInstant Carbon Footprint","x":-200,"y":-300,"width":300,"height":280,"color":"#16a34a"},
+		{"id":"audit","type":"text","text":"### 3. Audits + Pièces jointes\n\nAudit campagne :\n- Liste contrôle\n- Photos / documents\n- Non-conformités\n- Actions correctives\n\nPièces jointes :\n- Upload fichiers\n- Lien campagne-site\n- Import / export\n\nAdmin rights v1.11.0\npour gestion PJ","x":260,"y":-300,"width":280,"height":260,"color":"#f59e0b"},
+		{"id":"import","type":"text","text":"### 4. Import / Export\n\nv1.10.0+ :\n- Import éval ref (fix caractères spéciaux)\n- Export campagnes\n- Export résultats\n\nIntégration :\n- S3 rollback (v1.8.0)\n- CSV / Excel\n\nBase : dual MySQL\nschemas ehs + phphiehs","x":-620,"y":80,"width":260,"height":220,"color":"#8b5cf6"},
+		{"id":"cross","type":"text","text":"### 5. Liens inter-systèmes\n\n- [[Shop Maintenance App]] : maintenances liées\n- [[DOC4]] : même pattern PHP + ECS\n- [[ClearID]] : accès physiques\n- [[Hermès CI-CD Pipeline]] : déploiement","x":-200,"y":80,"width":280,"height":180,"color":"#E07850"},
+		{"id":"links","type":"text","text":"### Liens\n- [[EHS]]\n- [[Hermès International]]\n- [[Hermès CI-CD Pipeline]]\n- [[DOC4]]\n- [[Shop Maintenance App]]","x":260,"y":80,"width":200,"height":140}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"campaign","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"eval","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"audit","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"campaign","fromSide":"bottom","toNode":"import","toSide":"top","color":"#8b5cf6"},
+		{"id":"e5","fromNode":"eval","fromSide":"bottom","toNode":"cross","toSide":"top","color":"#E07850"},
+		{"id":"e6","fromNode":"audit","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

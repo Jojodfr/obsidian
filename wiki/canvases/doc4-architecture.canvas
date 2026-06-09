@@ -1,0 +1,29 @@
+{
+	"nodes":[
+		{"id":"cicd","type":"text","text":"### CI/CD (GitLab)\n- Hermes `template-cicd`\n- Gitleaks + SonarQube\n- Docker build → Harbor\n- AWS ECS deploy 4.2.1\n- DEV / ACC / PRD enabled\n- Vault for AWS creds","x":340,"y":280,"width":300,"height":240,"color":"1"},
+		{"id":"title","type":"text","text":"# DOC4\n### Sustainable Real Estate Architecture","x":-270,"y":-680,"width":800,"height":120,"color":"6"},
+		{"id":"web-app","type":"text","text":"### Web App (PHP 7.4 + Apache)\n- Bootstrap + jQuery\n- Font Awesome + Quill editor\n- `php400/` session manager\n- `phphidoc4/` application code\n- `public/` static assets","x":-460,"y":-500,"width":340,"height":220,"color":"5"},
+		{"id":"docker","type":"text","text":"### Docker Container\n- Debian 12 (Bookworm)\n- PHP 7.4 + extensions\n- Apache + SSL/rewrite\n- wkhtmltopdf + xvfb\n- msmtp (SMTP)\n- cron + supervisor","x":340,"y":-500,"width":300,"height":240,"color":"1"},
+		{"id":"storage","type":"text","text":"### File Storage\n\n**AWS EFS**\n- `documents/`\n- User uploads & files\n\n**AWS S3** \n- `avts3/`\n- File attachments\n\n**Docker**\n- `documents.dist/`\n- Document templates","x":340,"y":-215,"width":300,"height":450,"color":"4"},
+		{"id":"modules","type":"text","text":"### Application Modules\n\n**DOC1** — Projects & questionnaires\n- Multi-currency, companies\n- HI-DO validation workflow\n- File attachments\n\n**DOC P** — Site portfolio\n- Desktop/mobile recap\n- Actor management\n- Deliverables tracking\n\n**Sustainability**\n- CO2 trajectory\n- Score synthesis\n- Taxonomy reports","x":-460,"y":-230,"width":340,"height":540,"color":"4"},
+		{"id":"pdf","type":"text","text":"### PDF Generation\n- wkhtmltopdf\n- phpwkhtmltopdf library\n- Project reports\n- Questionnaire exports\n- `genpdf/` utilities","x":-400,"y":360,"width":340,"height":220,"color":"3"},
+		{"id":"note","type":"text","text":"> **Mature Hermes app** — v1.22.6 (2026-04-17)\n> PHP 7.4 legacy stack on ECS Fargate\n> PRD: https://sre.hermes.com","x":-140,"y":600,"width":600,"height":100,"color":"6"},
+		{"id":"health","type":"text","text":"### Health Checks\n- RDS MySQL (both DBs)\n- Cognito OIDC provider\n- EFS mount status\n- SMTP server resolution\n- `health_check.php`","x":-20,"y":235,"width":300,"height":220,"color":"1"},
+		{"id":"databases","type":"text","text":"### MySQL Databases\n\n**`doc4`**\nMain application data\n\n**`phphidoc4`**\nSecondary schema\n\nConnection via env vars:\n`DB_SERVER`, `DB_USER`,\n`DB_PASSWORD`, `DB_DATABASE`\n(+ `DOC4_*` variants)","x":-20,"y":-157,"width":300,"height":335,"color":"3"},
+		{"id":"auth","type":"text","text":"### Authentication\n- Amazon Cognito\n- Apache `mod_auth_openidc`\n- Self-enroll in DEV\n- Fixed FQDN required\n  (`doc4.internal`)","x":-20,"y":-400,"width":300,"height":220,"color":"2"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"web-app","toSide":"top"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"auth","toSide":"top"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"docker","toSide":"top"},
+		{"id":"e4","fromNode":"web-app","fromSide":"bottom","toNode":"modules","toSide":"top"},
+		{"id":"e5","fromNode":"auth","fromSide":"bottom","toNode":"databases","toSide":"top"},
+		{"id":"e6","fromNode":"docker","fromSide":"bottom","toNode":"storage","toSide":"top"},
+		{"id":"e7","fromNode":"modules","fromSide":"bottom","toNode":"pdf","toSide":"top"},
+		{"id":"e8","fromNode":"databases","fromSide":"bottom","toNode":"health","toSide":"top"},
+		{"id":"e9","fromNode":"storage","fromSide":"bottom","toNode":"cicd","toSide":"top"},
+		{"id":"e10","fromNode":"pdf","fromSide":"bottom","toNode":"note","toSide":"top"},
+		{"id":"e11","fromNode":"health","fromSide":"bottom","toNode":"note","toSide":"top"},
+		{"id":"e12","fromNode":"cicd","fromSide":"bottom","toNode":"note","toSide":"top"}
+	]
+}

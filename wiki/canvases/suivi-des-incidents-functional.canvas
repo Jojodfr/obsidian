@@ -1,0 +1,23 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Suivi des Incidents — Fonctionnel\n**Hermès Intl** | SDI | Déclaration -> Traitement -> Alertes -> Stats","x":-100,"y":-500,"width":720,"height":100},
+		{"id":"declare","type":"text","text":"### 1. Déclaration\n\n1. Nouveau incident\n   -> brouillon=true, champs vides\n   -> déclarant auto (session AdmUser)\n\n2. Remplissage :\n   - Catégorie / Type (filtres champs)\n   - Gravité (RefGravite)\n   - Société (RefSociete) -> sites\n   - Site (RefSite)\n   - Confidentialité N/C/R\n   - Réseaux sociaux (conditionnel)\n\n3. Alertes :\n   - RefAlertes par type\n   - JSON -> Incident.lstalertes\n   - Liste emails calculée AJAX","x":-620,"y":-300,"width":320,"height":340,"color":"#3b82f6"},
+		{"id":"pj","type":"text","text":"### 2. Pièces jointes\n\nUpload :\n- tmp/{username}/ fichier\n- Sauvegarde : déplacement permanent\n- S3 : presigned URL +3600s\n- Local : rename de tmp\n\nOpérations :\n- addPj, getPjs, delPj\n- updPjName\n- getObjectUrl (S3)","x":-200,"y":-300,"width":260,"height":240,"color":"#16a34a"},
+		{"id":"submit","type":"text","text":"### 3. Soumission\n\nBrouillon :\n- Sauvegarde sans notifications\n\nDéclaration :\n- brouillon=false\n- Création Mails (batch)\n- infoIncident JSON\n- Type A (add) ou U (update)\n- Statut AT (à traiter)\n\nUrgence RS :\n- retail.emergency@hermes.com\n- auto-ajouté si Social Media","x":200,"y":-300,"width":260,"height":260,"color":"#f59e0b"},
+		{"id":"batch","type":"text","text":"### 4. Traitement batch\n\nBatchMailsCommand :\n- File d attente Mails\n- Traite statut AT\n- Envoie liste calculée\n\nTypes événements :\n- Incident créé (A)\n- Incident modifié (U)\n\nAlertes :\n- Filtrage conf + type\n- Liste distribution dynamique","x":560,"y":-300,"width":240,"height":220,"color":"#06b6d4"},
+		{"id":"as400","type":"text","text":"### 5. Migration AS400\n\nImport CSV AGRlib.SDI001T :\n- Export Oracle/AS400 CSV\n- Encodage Windows-1252\n- Conversion UTF-8 (Notepad++/VS Code)\n- CLI : php bin/console import:csvIncident <file> <entity>\n\nNettoyage :\n- Guillemets smart\n- Symbole euro\n- Caractères de contrôle\n\nScripts :\nSDI001T, SDI005T, SDI014T","x":-620,"y":120,"width":300,"height":260,"color":"#8b5cf6"},
+		{"id":"socmed","type":"text","text":"### 6. Réseaux sociaux\n\nType spécial (numglossaire=1001) :\n- socialMediaPlatforms\n- socialMediaAccounts\n- socialMediaLinks\n- videoTimestamps\n- smEmployeesNameEmailResponse\n- smAuthorCegidNumberResponse\n\nRouting :\nretail.emergency@hermes.com\najouté automatiquement","x":-200,"y":120,"width":260,"height":220,"color":"#E07850"},
+		{"id":"glossary","type":"text","text":"### 7. Glossaire\n\nTraduction numérique :\n- tr->trans(267) -> entrée 267\n- Ref entities : numglossaire\n- GlossaireController par langue\n\nNon standard Symfony :\npas fichiers YAML/XLIFF\nclés numériques persistantes","x":200,"y":120,"width":240,"height":180,"color":"#888888"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Suivi des Incidents]]\n- [[Hermès International]]\n- [[Hermès CI-CD Pipeline]]\n- [[Monodyssee App]]","x":560,"y":120,"width":200,"height":120}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"declare","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"pj","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"submit","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"batch","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"declare","fromSide":"bottom","toNode":"as400","toSide":"top","color":"#8b5cf6"},
+		{"id":"e6","fromNode":"pj","fromSide":"bottom","toNode":"socmed","toSide":"top","color":"#E07850"},
+		{"id":"e7","fromNode":"submit","fromSide":"bottom","toNode":"glossary","toSide":"top","color":"#888888"},
+		{"id":"e8","fromNode":"batch","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

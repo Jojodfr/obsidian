@@ -1,0 +1,22 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# ClearID — Flux de données\n**Hermès Intl** | Genetec ClearID | Contrôle d accès physique\nMCH + SMI + IAM <-> ClearID <-> SMI/Gunnebo","x":-80,"y":-500,"width":760,"height":100},
+		{"id":"dir","type":"text","text":"### Direction des flux\n\n| Source | Destination | Données |\n|--------|-------------|---------|\n| MCH (Oracle HCM) | -> CLEARID | Contrats, photos |\n| SMI | <-> CLEARID | Droits accès, sites, plannings |\n| IAM | <-> CLEARID | Mapping identités |\n| CLEARID | -> SMI/Gunnebo | Re-export utilisateurs |\n\nAPI : *.eu.clearid.io |\nSchedules : cron quotidien 04:00","x":-600,"y":-300,"width":320,"height":300,"color":"#3b82f6"},
+		{"id":"mch","type":"text","text":"### MCH -> ClearID\n\nScripts :\n- UpdateContractDatesClearId.php\n- AddMissingPhotoClearId.php\n\nDonnées :\n- Dates début / fin contrat\n- Dates début affectation\n- Photos employés\n\nAPI :\nOracle HCM REST ->\nClearID PATCH / POST /picture\n\nEndpoint :\nfa-eoic-saasfaprod1.fa.ocs.oracle.com\n/hcmRestApi/resources/11.13.18.05","x":-200,"y":-300,"width":280,"height":280,"color":"#16a34a"},
+		{"id":"smi","type":"text","text":"### SMI <-> ClearID\n\n14 scripts PHP 8.2\nfrsellpappepa02.atlas.hermes\n/clearid/accctrl/\n\n| Flux | Script | API |\n|------|--------|-----|\n| Sync identities | SynchronizeIdentitiesClearId.php | POST synchronize |\n| Droits accès | ImportIdentitiesAccessClearId.php | PATCH access |\n| Sites/plannings | ImportLocationsSchedulesClearId.php | PATCH schedules |\n| Prestataires | ImportPrestatairesClearId.php | POST identities |\n| Missing | AddMissingIdentityPrincipalsClearId.php | - |\n\nNotes :\n- CSV UTF-8 + BOM, ; separateur |\n- Token refresh tous les 2000 records\n- siteId hardcodé SST","x":220,"y":-300,"width":280,"height":340,"color":"#f59e0b"},
+		{"id":"iam","type":"text","text":"### IAM <-> ClearID\n\nScripts : ScriptClearId.php\n\nMapping :\n- Excel locations_iam_mapping.xlsx\n- InfoCentre : 20 champs\n  (iam gnt.txt)\n\nÉchanges :\n- Identités\n- Droits physiques\n- Sites / localisations","x":620,"y":-260,"width":240,"height":220,"color":"#06b6d4"},
+		{"id":"audit","type":"text","text":"### Audits ClearID\n\nScripts :\n- ListIdentiesClearId.php\n- ListIdentityPrincipalsClearId.php\n- ListSitesLocationsSchedulesClearId.php\n- ListAccessesByLocationClearId.php\n\nOpérations :\n- GET identities\n- GET identityPrincipals\n- GET sites + locations\n- GET accesses par site","x":-600,"y":140,"width":280,"height":240,"color":"#E07850"},
+		{"id":"sst","type":"text","text":"### ClearID -> SMI\n\nRe-export Gunnebo/SMI :\n- Utilisateurs mis à jour\n- Droits synchronisés\n- Boucle retour SMI\n\nSite prédéfini :\n72b455d1-5e21-46a1-afef-\n390b2f95b67d\n(Gunnebo/SST)","x":-200,"y":140,"width":240,"height":200,"color":"#8b5cf6"},
+		{"id":"links","type":"text","text":"### Liens\n- [[ClearID]]\n- [[ClearID Integration Architecture]]\n- [[ClearID - MCH Interface]]\n- [[ClearID - SMI Interface]]\n- [[ClearID - IAM Interface]]\n- [[Hermès International]]","x":220,"y":140,"width":240,"height":160}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"dir","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"mch","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"smi","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"iam","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"smi","fromSide":"bottom","toNode":"audit","toSide":"top","color":"#E07850"},
+		{"id":"e6","fromNode":"iam","fromSide":"bottom","toNode":"sst","toSide":"top","color":"#8b5cf6"},
+		{"id":"e7","fromNode":"audit","fromSide":"right","toNode":"sst","toSide":"left","color":"#E07850"},
+		{"id":"e8","fromNode":"sst","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

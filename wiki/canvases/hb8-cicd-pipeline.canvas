@@ -22,7 +22,7 @@
 		{"id":"env-matrix","type":"text","text":"### Environment Matrix\n\n| Env | Enabled | Trigger |\n|-----|---------|---------|\n| DEV | true | Manual |\n| TST | true | Manual |\n| CHK | true | MR |\n| ACC | true | Manual |\n| PRD | true | Git tag |","x":-820,"y":500,"width":320,"height":300,"color":"#2D2D2D"},
 		{"id":"variables","type":"text","text":"### Key Variables\n\n```yaml\nPUBLISH_REPOSITORY: artifactory\nGITGUARDIAN_FULL_SCAN: \"true\"\nDOCKER_TLS_CERTDIR: \"/certs\"\nGIT_SSL_NO_VERIFY: \"true\"\nDEV_ENABLED: \"true\"\nTST_ENABLED: \"true\"\nCHK_ENABLED: \"true\"\nACC_ENABLED: \"true\"\n```","x":-1160,"y":180,"width":280,"height":420,"color":"#2D2D2D"},
 		{"id":"repo-source","type":"text","text":"### Repo: source/ (not compiled )\n\n**Nuxt.js 3**\n- pages/ (Vue SFCs)\n- components/\n- assets/\n- nuxt.config.ts\n- package.json\n\n**Output**\n- dist/\n- _nuxt/ chunks\n- 200.html SPA\n- .output/","x":-400,"y":425,"width":400,"height":407,"color":"#60A5FA"},
-		{"id":"repo-content-aws","type":"text","text":"### Repo: content-aws/\n\n**Generic files**\nS3 content\nno upload_subdir\n\n**CI configs**\n- .gitlab-ci.yml\n- gitlab-ci-custom\n\nIncludes:\ngitguardian + S3 push + custom","x":-400,"y":40,"width":260,"height":350,"color":"#8b5cf6"}
+		{"id":"repo-content-aws","type":"text","text":"### Repo: content-aws/\n\n**Generic files**\nS3 content\nno upload_subdir\n\n**CI configs**\n- .gitlab-ci.yml\n- gitlab-ci-custom\n\nIncludes:\ngitguardian + S3 push + custom","x":-440,"y":10,"width":260,"height":380,"color":"#8b5cf6"}
 	],
 	"edges":[
 		{"id":"e1","fromNode":"phase1","fromSide":"right","toNode":"phase2","toSide":"left","color":"#E07850"},

@@ -1,0 +1,21 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Savoir-faire — Architecture\n**Hermès Intl** | CFA MyCampH | Symfony 5.4 | PHP 7.2 | PostgreSQL | Guard","x":-100,"y":-500,"width":800,"height":100},
+		{"id":"stack","type":"text","text":"### Pile\n\n| Couche | Technologie |\n|--------|-------------|\n| Framework | Symfony 5.4.* |\n| PHP | >= 7.2.5 |\n| ORM | Doctrine 2.12 (annotations @ORM) |\n| Templates | Twig 2/3 |\n| Auth | Symfony Guard + Form Login |\n| PDF | Dompdf + wkhtmltopdf (Snappy) |\n| CI/CD | GitLab CI (gitleaks uniquement) |\n| Local | php bin/console server:run |\n\nStatut : RETIRÉ\nSuccesseur : [[Monodyssee]]","x":-640,"y":-300,"width":340,"height":360,"color":"#3b82f6"},
+		{"id":"controllers","type":"text","text":"### Contrôleurs (18)\n\n| Contrôleur | Rôle |\n|------------|------|\n| CampagnesController | CRUD campagnes + fermeture/réouverture |\n| LoginController | Auth formulaire |\n| EcolesController | Gestion écoles |\n| EvaluationController | Notation + visualisation |\n| JalonsController | Jalons pédagogiques |\n| PromosController | Promotions |\n| PromoUsersController | Assignation apprenants |\n| QuestionController | Questionnaires |\n| ReponsesController | Saisie réponses |\n| GenPdfController | PDF génération |\n| UtilisateurController | Profils utilisateurs |\n| RegistrationController | Inscription |\n| SecurityController, RolesController, StatutsController, TypesPiecesController, FilArianeController, ValeursController | Utilitaires |","x":-200,"y":-300,"width":340,"height":380,"color":"#16a34a"},
+		{"id":"auth","type":"text","text":"### Authentification Guard\n\nFormLoginAuthenticator :\n- étend AbstractFormLoginAuthenticator |\n- CSRF token validation\n- Vérification PasswordEncoder\n- Redirection homepage\n\nSession :\n- username, userid\n- user_ecole, user_role\n\nRôles :\n- role 4 = admin\n- role 3 = école uniquement","x":260,"y":-300,"width":280,"height":280,"color":"#f59e0b"},
+		{"id":"eval","type":"text","text":"### Workflow Évaluation\n\n1. Créer campagne (école + promo + jalon)\n   -> Cloner Questions -> Reponses (par apprenant)\n   -> Créer Évaluation par apprenant\n   -> Notifier formateurs email\n\n2. Apprenant saisit réponses\n   -> Score par question\n   -> Pièces jointes (TypesPieces)\n\n3. Formateur valide\n   -> noteGene + appréciation\n   -> signForma\n\n4. Élève signe\n   -> signEleve\n\n5. Clôture campagne\n   -> statut=4, dateFin=now\n   -> Non-évalués -> 5 (abandon)","x":640,"y":-300,"width":280,"height":340,"color":"#06b6d4"},
+		{"id":"data","type":"text","text":"### Modèle dénormalisé\n\nReponses = clone de Questions :\nINSERT INTO reponses SELECT question_id,...\nFROM questions WHERE jalon_id=...\n\nChaque apprenant évalue\nson propre arbre questions\n\nBase : PostgreSQL 13","x":-640,"y":140,"width":300,"height":200,"color":"#8b5cf6"},
+		{"id":"migration","type":"text","text":"### Commandes Symfony\n\n- make:migration\n- doctrine:migrations:migrate\n- doctrine:schema:update --force\n- make:entity --regenerate App\n- make:form, make:controller\n\nAssets : npm run watch\n(public/assets/)","x":-200,"y":140,"width":260,"height":200,"color":"#E07850"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Savoir-faire]]\n- [[Monodyssee]]\n- [[CFA Hermès Evaluation Framework]]\n- [[Formation Hermès]]\n- [[Hermès International]]","x":260,"y":140,"width":240,"height":160}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"stack","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"controllers","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"auth","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"eval","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"stack","fromSide":"bottom","toNode":"data","toSide":"top","color":"#8b5cf6"},
+		{"id":"e6","fromNode":"controllers","fromSide":"bottom","toNode":"migration","toSide":"top","color":"#E07850"},
+		{"id":"e7","fromNode":"eval","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

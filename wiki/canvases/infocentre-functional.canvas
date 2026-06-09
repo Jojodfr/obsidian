@@ -1,0 +1,26 @@
+{
+	"nodes":[
+		{"id":"title","type":"text","text":"# InfoCentre — Fonctionnel\n**Hermès Intl** | BI + Reporting\nTableaux -> Rapports -> Exports Batch -> Analytics Snowflake","h":100,"x":-120,"y":-520,"width":760,"height":100},
+		{"id":"desk","type":"text","text":"### 1. Tableau de bord (php400/desk/)\n\nphl_desk.php : entrée BI\n- Tabbar : phl_tabbar, phl_tabmenu\n- Menubar : desktop + boutons\n- Toolbar : phl_toolbar\n- XML : phl_xmlmenu\n\nSession :\n- phl_APPLI (php400 / phpallstat)\n- phl_LANG (FR / EN)\n- phl_USER\n- phl_db connexion\n\nMobile : phl_isMobile\n-> indexMobile.php","x":-680,"y":-340,"width":330,"height":520,"color":"#3b82f6"},
+		{"id":"create","type":"text","text":"### 2. Création Rapport\n\nWizard (7 étapes) :\n1. report_newsel1 : sélection template\n2. report_crt : création metadata\n3. report_sql : éditeur SQL\n4. report_tab : config onglets\n5. report_fld : champs + formatage\n6. report_param1 : paramètres\n7. report_lnk : liens drill-down\n\nGroupement : report_grp1.php\nSauvegarde : report_ins.php\n\nStockés en struct MySQL.","x":-240,"y":-320,"width":340,"height":460,"color":"#f59e0b"},
+		{"id":"run","type":"text","text":"### 3. Exécution\n\nDispatcher : report.php\n\nTypes :\n- report1.php : résumé\n- report2.php : détail\n- report3.php : cross-tab\n- report4.php : affichage principal\n- report5.php : graphique\n\nRendus :\n- report_dsp.php : standard\n- report_gendsp.php : généré\n\nDrill-down : report_lnk.php","x":160,"y":-300,"width":300,"height":540,"color":"#16a34a"},
+		{"id":"output","type":"text","text":"### 4. Sorties\n\nGénération :\nreport_gen.php -> report_genupd.php\n\nFormats :\n- PDF : TCPDF (php400/externe/tcpdf/)\n- Excel : PHPSpreadsheet\n- HTML : tables serveur\n- CSV : export brut\n\nPartage : report_partage.php\n\nFichiers :\nreport_file.php, report_save.php\nreport_tab_maj.php","x":500,"y":-300,"width":260,"height":540,"color":"#06b6d4"},
+		{"id":"legacy","type":"text","text":"### 8. Formats AS/400\n\nDates (phl_base.php) :\n- dd/mm/yyyy : européen\n- yyyy-mm-dd : ISO\n- cyyjul / cyymmdd : Julian IBM\n\nChaînes fixes :\n- options : [fixed => true]\n- Vide default : ''\n\nPHP400 = PHP\npour IBM iSeries","x":500,"y":300,"width":300,"height":420},
+		{"id":"analytics","type":"text","text":"### 7. Analytics Snowflake\n\nquery_snowflake.php :\n- Analytics inter-systèmes\n- Tendances historiques\n- Requêtes data warehouse\n- Intégration BI tools\n\nUse cases :\n- Workforce analytics\n- Analyse absences\n- Métriques qualité\n\nHealth check dual DB\n(MySQL + Snowflake)","x":160,"y":300,"width":300,"height":480,"color":"#16a34a"},
+		{"id":"security","type":"text","text":"### 6. Sécurité\n\nContrôle multi-couches\n(session-based) :\n\n| Niveau | Fichier |\n|--------|---------|\n| Bouton | report_btn_secu1/2 |\n| Table | report_tbl2_secu1/2 |\n| Lien | report_tbl2_slien1/2 |\n\n$_SESSION[phl_USER] + rôles.","x":-260,"y":240,"width":300,"height":360,"color":"#8b5cf6"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Infocentre]]\n- [[Infocentre App]]\n- [[Hermès International]]\n- [[Hermès CI-CD Pipeline]]\n- [[ClearID - IAM Interface]]","x":-200,"y":705,"width":260,"height":150},
+		{"id":"batch","type":"text","text":"### 5. phpallstat — Batch\n\nSous-app montée php400 :\n$appli = phpallstat\nrequire_once(../php400/include/phl_loadsession.php)\n\nOpérations :\n- batch_export.php\n- rapports_regen.php (cron)\n- download_center.php\n- create_vues.php\n\nExport :\nexpserv1.php, expserv2.php\ngenexp2_1.php\n\nRôle : traitements lourds\nsans bloquer UI.","x":-670,"y":240,"width":320,"height":540,"color":"#E07850"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"desk","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"create","toSide":"top","color":"#f59e0b"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"run","toSide":"top","color":"#16a34a"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"output","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"desk","fromSide":"bottom","toNode":"batch","toSide":"top","color":"#E07850"},
+		{"id":"e6","fromNode":"create","fromSide":"bottom","toNode":"security","toSide":"top","color":"#8b5cf6"},
+		{"id":"e7","fromNode":"run","fromSide":"bottom","toNode":"analytics","toSide":"top","color":"#16a34a"},
+		{"id":"e8","fromNode":"output","fromSide":"bottom","toNode":"legacy","toSide":"top","color":"#f59e0b"},
+		{"id":"e9","fromNode":"security","fromSide":"right","toNode":"analytics","toSide":"left","color":"#8b5cf6"},
+		{"id":"e10","fromNode":"analytics","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

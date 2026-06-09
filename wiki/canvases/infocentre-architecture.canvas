@@ -1,0 +1,23 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# InfoCentre — Architecture\n**Hermès Intl** | PHP400 | BI + Reporting | MySQL + Snowflake | ECS Fargate","x":-120,"y":-520,"width":800,"height":120},
+		{"id":"stack","type":"text","text":"### Pile\n\n| Couche | Technologie |\n|-------|------------|\n| OS | Debian 12 |\n| Web | Apache 2.4 + SAML mellon |\n| PHP | 8.1 |\n| Framework | PHP400 (origine IBM iSeries) |\n| DB1 | MySQL RDS Aurora |\n| DB2 | Snowflake via pdo_snowflake |\n| PDF | TCPDF |\n| Authentification | SAML via mod_auth_mellon |\n| Email | msmtp client SMTP |\n| Debug | Adminer, query_db, tinyfilemanager |","x":-680,"y":-320,"width":360,"height":440,"color":"#E07850"},
+		{"id":"dual","type":"text","text":"### Dual Application\n\nphp400/ — Cœur + InfoCentre\n- desk/ : tableaux, onglets, menus\n- report/ : 70+ fichiers moteur\n  création, SQL, affichage\n  tables, onglets, partage\n  sécurité\n- admin/ : admin framework\n- include/ : phl_base, loadsession\n- connSSO/ : authentification\n- security/ : contrôle accès\n- data/ : couche accès\n\nphpallstat/ — Sous-app stats\n- batch_export\n- rapports_regen\n- download_center\n- create_vues","x":-240,"y":-280,"width":360,"height":440,"color":"#3b82f6"},
+		{"id":"cicd","type":"text","text":"### CI/CD\n\n| Composant | Version |\n|-----------|---------|\n| gitleaks | 1.1.0 |\n| SonarQube | 2.4.0 |\n| containers | 2.1.0 |\n| aws-ecs | 4.2.1 |\n| release | 2.1.0 |\n\nEnvirons : dev auto + prd tag\n tst/chk/acc/ppd : désactivés\n\nRegistry : Harbor\nConfig : S3 ecs_config.env","x":240,"y":-280,"width":320,"height":360,"color":"#888888"},
+		{"id":"snowflake","type":"text","text":"### Snowflake\n\n- pdo_snowflake extension C native\n- snowcd diagnostic\n- query_snowflake.php debug\n- allowlist.json contrôle sortie\n\nMySQL opérationnel + Snowflake\nanalytique = dual DB\n\nHealth check dual DB :\n- maillage disponible ?\n- phphimlg disponible ?","x":640,"y":-280,"width":260,"height":300,"color":"#16a34a"},
+		{"id":"debug","type":"text","text":"### Debug (Prod)\n\nRépertoire debug/ en conteneur :\n- Adminer 4.8.1\n- query_db + query_snowflake\n- browse_doc\n- test_email + show_msmtp\n- test_bucket + list_bucket (S3)\n- servercheck.php diagnostics\n- tinyfilemanager.php\n- nfo.php info PHP\n- show_snowflakeerror.php\n\nMarqueur legacy :\n accès direct DB production.","x":-680,"y":240,"width":340,"height":320,"color":"#f59e0b"},
+		{"id":"health","type":"text","text":"### Health Check\n\nhealth_check.php (mysqli, 5s timeout) :\n1. TCP connexion MySQL\n2. DB maillage disponible ?\n3. DB phphimlg disponible ?\n\nEndpoints debug :\n- /debug/adminer.php\n- /debug/query_db.php\n- /debug/query_snowflake.php\n- /debug/nfo.php","x":-240,"y":240,"width":300,"height":220,"color":"#06b6d4"},
+		{"id":"clearid","type":"text","text":"### Mapping IAM -> ClearID\n\niam gnt.txt — 20 champs\n\n| Champ | Chemin ClearID |\n|-------|----------------|\n| nom | identities.firstName |\n| prénom | identities.lastName |\n| IGG | systemData.externalId |\n| contrat | companyData.workerType |\n| Site | companyData.siteId |\n| login_atlas | customFields.login_atlas |\n| collab. | customFields.collaborator |\n| start_date | customFields.start_date |\n| end_date | customFields.end_date |\n| division | customFields.division |\n| établissement | customFields.etablissement |\n\nSpéc cle : InfoCentre BI + RH\n-> intégration accès physique.","x":240,"y":200,"width":320,"height":320,"color":"#8b5cf6"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Infocentre]]\n- [[Infocentre App]]\n- [[Hermès International]]\n- [[Hermès CI-CD Pipeline]]\n- [[ClearID - IAM Interface]]\n- [[ClearID]]\n- [[EHS]]\n- [[DOC4]]","x":640,"y":200,"width":240,"height":220}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"stack","toSide":"top","color":"#E07850"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"dual","toSide":"top","color":"#3b82f6"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"cicd","toSide":"top","color":"#888888"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"snowflake","toSide":"top","color":"#16a34a"},
+		{"id":"e5","fromNode":"stack","fromSide":"bottom","toNode":"debug","toSide":"top","color":"#f59e0b"},
+		{"id":"e6","fromNode":"dual","fromSide":"bottom","toNode":"health","toSide":"top","color":"#06b6d4"},
+		{"id":"e7","fromNode":"cicd","fromSide":"bottom","toNode":"clearid","toSide":"top","color":"#8b5cf6"},
+		{"id":"e8","fromNode":"snowflake","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

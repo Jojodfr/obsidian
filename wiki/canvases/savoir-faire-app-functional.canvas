@@ -1,0 +1,21 @@
+﻿{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Savoir-faire — Fonctionnel\n**Hermès Intl** | CFA MyCampH EDSF | Évaluation apprentis maroquinerie\nCampagne -> Jalons -> Bilan -> Attestation","x":-100,"y":-480,"width":780,"height":100},
+		{"id":"jalons","type":"text","text":"### 1. Jalons — Évaluation technique\n\nPrincipe : réalisation autonome\nd un produit / technique\n\nSavoir-faire évalués :\n- Griffage (droit, régulier)\n- Couture sellier (point, martelage)\n- Couture retournée\n- Astiquage : ponçage, filetage\n- Parage (largeur, épaisseur)\n- Collage (dépose, grattage invisible)\n- Montage (plaquage sans béillement)\n- Rembord, Surtaille, Retournage\n\nProduits : Constance slim, Rachel,\nCouvre cahier + marque-page","x":-640,"y":-300,"width":300,"height":340,"color":"#3b82f6"},
+		{"id":"comment","type":"text","text":"### Commentaires formateurs\n\nChaque savoir-faire :\n- commentaire libre formateur\n- points à corriger\n- défauts observés\n\nExemples :\nvague sur longueur, trace de colle,\nparage insuffisant, cuir fendillé","x":-200,"y":-300,"width":260,"height":200,"color":"#16a34a"},
+		{"id":"score","type":"text","text":"### Échelle notation 5 niveaux\n\n| Niveau | Libellé | Signification |\n|--------|---------|---------------|\n| 1 | Non évalué | Pas encore abordé |\n| 2 | Non acquis | Non maîtrisé |\n| 3 | En cours (-) | Progression fragile |\n| 4 | En cours (+) | Presque maîtrisé |\n| 5 | Acquis | Autonomie complète |\n\nAppliqué à tous : Jalons, Bilans, CAP","x":220,"y":-300,"width":280,"height":260,"color":"#f59e0b"},
+		{"id":"bilans","type":"text","text":"### 2. Bilans — Évaluation globale\n\nAxes :\nA. Savoir-être (9 items)\n- valeurs maison, esprit collectif, communication,\n  progression, patience, adaptation,\n  organisation, rigueur, proposition\n\nB. Savoir-faire (12 items)\n- lecture peau, placement, coupe,\n  calcul consommation, parage, collage,\n  maintenance, propreté, respect temps,\n  reproduction gestes, autres\n\nC. Santé + Sécurité\n- ergonomie, TMS, stress\n\nD. Règlement intérieur\n- contrat, ponctualité","x":600,"y":-300,"width":280,"height":340,"color":"#06b6d4"},
+		{"id":"cap","type":"text","text":"### 3. CAP Maroquinerie\n\nÉpreuve EP1 :\npréparation produit\n\nCompétences :\nC1. Exploiter document technique\nC2. Identifier éléments constitutifs\nC3. Réaliser préparation\n\nPDF généré + attestation","x":-640,"y":100,"width":240,"height":180,"color":"#8b5cf6"},
+		{"id":"end","type":"text","text":"### Clôture cycle\n\nPOINTS FORTS\nAXES AMÉLIORATION\nCOMMENTAIRE GÉNÉRAL\n\nSignature :\n- formateur (signForma)\n- élève (signEleve)\n\nExport PDF/Excel\nTraçé ExportActions","x":-200,"y":100,"width":260,"height":200,"color":"#E07850"},
+		{"id":"links","type":"text","text":"### Liens\n- [[Savoir-faire]]\n- [[Monodyssee App]]\n- [[CFA Hermès Evaluation Framework]]\n- [[Formation Hermès]]\n- [[Hermès International]]","x":220,"y":100,"width":260,"height":160}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"jalons","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"comment","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"score","toSide":"top","color":"#f59e0b"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"bilans","toSide":"top","color":"#06b6d4"},
+		{"id":"e5","fromNode":"jalons","fromSide":"bottom","toNode":"cap","toSide":"top","color":"#8b5cf6"},
+		{"id":"e6","fromNode":"score","fromSide":"bottom","toNode":"end","toSide":"top","color":"#E07850"},
+		{"id":"e7","fromNode":"bilans","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

@@ -1,0 +1,28 @@
+{
+	"nodes":[
+		{"id":"web-app","type":"text","text":"### Web App (jQuery SPA)\n- `index.html` + jQuery 3.x\n- Bootstrap + Font Awesome\n- Reads `data/parkings.js`\n- Renders occupancy bars\n- Responsive table layout","x":-400,"y":-220,"width":320,"height":220,"color":"5"},
+		{"id":"note-simple","type":"text","text":"> **Simplest Hermes app** in the portfolio.\n> No build step, no framework, no auth.\n> Just static files + a data file refreshed by cron.","x":-190,"y":420,"width":600,"height":100,"color":"6"},
+		{"id":"title","type":"text","text":"# Epark\n### Parking Availability Dashboard","x":-290,"y":-620,"width":800,"height":120,"color":"6"},
+		{"id":"mce-system","type":"text","text":"### MCE Parking System\n\nSource of truth for parking occupancy data across Hermes sites.\n\nInternal Hermes system queried by `getmcedata.php`.","x":680,"y":-620,"width":360,"height":220,"color":"6"},
+		{"id":"php-api","type":"text","text":"### getmcedata.php\n\n**DEV:**\n`parkings.atlas.hermes/aws/getmcedata.php`\n\n**PRD:**\n`prd-ariane.atlas.hermes/phphsaigg/aws/getmcedata.php`\n\nReturns live parking occupancy JSON.","x":1260,"y":-400,"width":520,"height":270,"color":"5"},
+		{"id":"s3-hosting","type":"text","text":"### AWS S3 Hosting\n- `s3://s3-prd-epark-web-01`\n- Static files only:\n  - `index.html`\n  - `jquery.min.js`\n  - `bootstrap.min.css`\n  - `font-awesome.min.css`\n- Data file: `data/parkings.js`","x":710,"y":-140,"width":300,"height":280,"color":"4"},
+		{"id":"environments","type":"text","text":"### Environments\n\n**DEV (on-prem):**\n`https://parkings.atlas.hermes`\n\n**PRD:**\n`https://parkings.hermes.com`\n\nProject share:\n`\\\\cifs-frsel\\...\\Epark`","x":510,"y":370,"width":300,"height":300,"color":"1"},
+		{"id":"json-file","type":"text","text":"### parkings.js\n\nGenerated JSON file:\n- `date` timestamp\n- `nb_parkings` count\n- `parkings[]` array:\n  - `nom` (site name)\n  - `place_restante`\n  - `taux_occupation`\n  - color codes for UI","x":1160,"y":250,"width":280,"height":340,"color":"4"},
+		{"id":"data-source","type":"text","text":"### Data Sources\n\n**DEV (on-prem):**\n- VM: `FRSELLPAPPEPA02`\n- Cron: every 5 min\n- `getmcedata.php`\n\n**PRD:**\n- EAI script\n- `prd-ariane.atlas.hermes`\n- Generates `parkings.js`","x":20,"y":-380,"width":320,"height":380,"color":"3"},
+		{"id":"cicd","type":"text","text":"### CI/CD (GitLab)\n- Hermes `template-cicd`\n- SonarQube 2.4.0\n- Gitleaks 1.1.0\n- S3 deploy 2.0.0\n- Only **PRD** enabled","x":-400,"y":80,"width":320,"height":220,"color":"1"},
+		{"id":"security","type":"text","text":"### Security\n- SonarQube analysis\n- Gitleaks secrets scan\n- HashiCorp Vault\n  (`gitlab_prd_role`)\n- AWS `assume_role`\n- No auth on app itself","x":20,"y":130,"width":320,"height":240,"color":"2"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"web-app","toSide":"top"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"data-source","toSide":"top"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"s3-hosting","toSide":"top"},
+		{"id":"e4","fromNode":"web-app","fromSide":"bottom","toNode":"cicd","toSide":"top"},
+		{"id":"e5","fromNode":"data-source","fromSide":"bottom","toNode":"security","toSide":"top"},
+		{"id":"e6","fromNode":"s3-hosting","fromSide":"bottom","toNode":"environments","toSide":"top","color":"3"},
+		{"id":"e7","fromNode":"mce-system","fromSide":"bottom","toNode":"php-api","toSide":"top","color":"1","label":"queries"},
+		{"id":"e8","fromNode":"php-api","fromSide":"bottom","toNode":"json-file","toSide":"top","label":"generates"},
+		{"id":"e9","fromNode":"json-file","fromSide":"left","toNode":"s3-hosting","toSide":"right","color":"3","label":"uploaded to"},
+		{"id":"e10","fromNode":"json-file","fromSide":"left","toNode":"web-app","toSide":"right","color":"3","label":"read by"},
+		{"id":"e11","fromNode":"data-source","fromSide":"right","toNode":"php-api","toSide":"left","color":"1","label":"calls every 5min"}
+	]
+}
