@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"title","type":"text","text":"# Tilbury App\n**Hermes International** | TIL | Boutique & Store Management\nSymfony 6.2 | PHP 8.1 | AWS ECS Fargate","x":-200,"y":-540,"width":800,"height":140},
+		{"id":"core","type":"text","text":"### Core Layer\n\n**Magasin (Boutique)** — 24 fields\n- Identity: username, nom, prenom, fonction\n- Assignment: datedebgrp, datedebfct\n- Store: magasin (name), filiale, region\n- Metrics: effectif, nbsubhie, nbequipes, taille\n- Hours: horairedeb, horairefin\n- Management: manager, rh, assistant\n- Status: actif, isnotif, statut\n\n**Site (Location/Manufacture)** — 23 fields\n- Same core + manufacture, pole\n- Replaces magasin/filiale with manufacture\n\n**Tandem (Pairing)**\n- codetandem\n- idrmag + idrsite\n- datedebsite / datefinsite\n- datedebmag / datefinmag\n- Full audit trail","x":-700,"y":-300,"width":380,"height":560,"color":"#3b82f6"},
+		{"id":"domain","type":"text","text":"### Domain Model\n\n**Core Business (6)**\n- Magasin (boutique, 24 fields)\n- Site (location, 23 fields)\n- Tandem (pairing with dates)\n- Theme (question categories)\n- Question (responses)\n- Preference (levels + Donneeref)\n\n**Attachments & Skills (3)**\n- PieceJointe (files: nomfichier, ext)\n- Langue (codlangue, levellg)\n- Donneeref (bilingual lookup)\n\n**Reference (2)**\n- RefPartenaires (nom, mail)\n- RefSociete (company names)\n\n**Admin (8)**\n- User (Symfony Security)\n- AdmUser, AdmGroupe, AdmGrpmen\n- AdmMenu, AdmParam, AdmConn\n- AdmUsgrp","x":-240,"y":-320,"width":340,"height":640,"color":"#16a34a"},
+		{"id":"pipeline","type":"text","text":"### CI/CD Pipeline\n\n1. analysis (SonarQube + gitleaks)\n2. build_app\n3. build (Docker)\n4. test\n5. push (Harbor)\n6. pre_deploy\n7. deploy_dev (master)\n8. deploy_tst/chk/rct\n9. release\n10. deploy_acc/ppd\n11. deploy_prd (tag)\n12. S3 config copy\n\nECS cluster + service\nFargate on AWS","x":640,"y":-260,"width":220,"height":480,"color":"#888888"},
+		{"id":"patterns","type":"text","text":"### Design Patterns\n\n**Dual-Entity Discriminator**\nTheme, Question, Preference,\nPieceJointe, Langue link to BOTH\nMagasin (rmag) and Site (rsite)\nwith usertype=M/S\n\n**Bilingual Reference**\nDonneeref replaces Symfony i18n:\n- typedata = category code\n- libdatafr / libdataen\n- numorder for sorting\n\n**Audit Trail**\nEvery entity has:\n- tmpcre / tmpmaj\n- codoper / codopermaj\n(AdmUser create/update)","x":-690,"y":320,"width":360,"height":380,"color":"#8b5cf6"},
+		{"id":"links","type":"text","text":"### Wiki Links\n- [[Tilbury]]\n- [[Tilbury App]]\n- [[Hermes International]]\n- [[Shop Maintenance App]]\n- [[Hermes CI-CD Pipeline]]\n- [[Symfony ECS Deployment]]","x":620,"y":300,"width":260,"height":220},
+		{"id":"tech","type":"text","text":"### Technical Stack\n\n| Layer | Technology |\n|-------|------------|\n| Framework | Symfony 6.2 |\n| PHP | 8.1+ |\n| ORM | Doctrine 2.14 |\n| DB | MariaDB/MySQL |\n| PDF | KnpSnappy + wkhtmltopdf |\n| Spreadsheets | PHPSpreadsheet |\n| Auth | Symfony Security |\n| Email | VerifyEmailBundle |\n| Serializer | Groups: groupe1-4, pj, langue |","x":174,"y":-130,"width":395,"height":340,"color":"#E07850"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"title","fromSide":"bottom","toNode":"core","toSide":"top","color":"#3b82f6"},
+		{"id":"e2","fromNode":"title","fromSide":"bottom","toNode":"domain","toSide":"top","color":"#16a34a"},
+		{"id":"e3","fromNode":"title","fromSide":"bottom","toNode":"tech","toSide":"top","color":"#E07850"},
+		{"id":"e4","fromNode":"title","fromSide":"bottom","toNode":"pipeline","toSide":"top","color":"#888888"},
+		{"id":"e5","fromNode":"core","fromSide":"right","toNode":"domain","toSide":"left","color":"#3b82f6"},
+		{"id":"e6","fromNode":"domain","fromSide":"bottom","toNode":"patterns","toSide":"top","color":"#8b5cf6"},
+		{"id":"e7","fromNode":"pipeline","fromSide":"bottom","toNode":"links","toSide":"top","color":"#888888"}
+	]
+}

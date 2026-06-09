@@ -3,6 +3,26 @@
   "created": "2026-04-23",
   "description": "Ingest delta tracker and address map for the claude-obsidian vault. Do not hand-edit; wiki-ingest maintains this.",
   "sources": {
+    ".raw/hermes-cicd-pipeline.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-04",
+      "pages_created": [
+        "wiki/sources/hermes-cicd-pipeline.md",
+        "wiki/entities/Hermes CI-CD Pipeline.md",
+        "wiki/concepts/GitLab CI-CD Component Architecture.md",
+        "wiki/concepts/Hermes CI-CD Baseline Template.md",
+        "wiki/concepts/AWS ECS Deployment Pattern.md",
+        "wiki/concepts/Container Build Pipeline.md"
+      ],
+      "pages_updated": [
+        "wiki/index.md",
+        "wiki/hot.md",
+        "wiki/log.md",
+        "wiki/entities/_index.md",
+        "wiki/concepts/_index.md",
+        "wiki/sources/_index.md"
+      ]
+    },
     ".raw/claude-obsidian-ecosystem-research.md": {
       "hash": "n/a",
       "ingested_at": "2026-04-08",
@@ -50,9 +70,126 @@
       "ingested_at": "2026-06-03",
       "pages_created": ["wiki/sources/shop-maintenance-app-repo.md", "wiki/entities/Shop Maintenance App.md", "wiki/concepts/Ticketing System Architecture.md"],
       "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/concepts/_index.md", "wiki/entities/Hermes International.md"]
+    },
+    ".raw/epark-sources-aws.md": {
+      "hash": "e03c47f3460c6bcd53196a396ff1cc27",
+      "ingested_at": "2026-06-03",
+      "pages_created": ["wiki/sources/epark-sources-aws.md", "wiki/entities/Epark.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/entities/Hermes International.md"]
+    },
+    ".raw/doc4-sources.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-03",
+      "pages_created": ["wiki/sources/doc4-sources.md", "wiki/entities/DOC4.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/entities/Hermes International.md"]
+    },
+    ".raw/cr-atelier6-shop-maintenance.pdf": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-04",
+      "pages_created": ["wiki/sources/cr-atelier6-shop-maintenance.md", "wiki/entities/Talan.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md", "wiki/entities/Shop Maintenance App.md"]
+    },
+    ".raw/mep-shop-maintenance-20250821.pdf": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-04",
+      "pages_created": ["wiki/sources/mep-shop-maintenance-20250821.md"],
+      "pages_updated": ["wiki/entities/Shop Maintenance App.md"]
+    },
+    ".raw/niji-hermes-reversibilite-ateliers-6.pdf": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-04",
+      "pages_created": ["wiki/sources/niji-hermes-reversibilite-ateliers-6.md"],
+      "pages_updated": ["wiki/entities/Shop Maintenance App.md"]
+    },
+    ".raw/clearid-access-api-swagger.json": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-05",
+      "pages_created": ["wiki/sources/clearid-access-api-swagger.md", "wiki/concepts/ClearID Access API.md"],
+      "pages_updated": ["wiki/entities/ClearID.md", "wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/sources/_index.md", "wiki/concepts/_index.md"]
+    },
+    ".raw/clearid-sites-locations-schedules.csv": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-05",
+      "pages_created": ["wiki/sources/clearid-sites-locations-schedules.md", "wiki/entities/ClearID - Site and Location Reference.md"],
+      "pages_updated": ["wiki/entities/ClearID.md", "wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/entities/_index.md", "wiki/sources/_index.md"]
+    },
+    ".raw/clearid-developer-guide.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-05",
+      "pages_created": ["wiki/sources/clearid-developer-guide.md", "wiki/concepts/ClearID Developer Portal.md"],
+      "pages_updated": ["wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/sources/_index.md", "wiki/concepts/_index.md"]
+    },
+    ".raw/monodyssee-repo/README.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-08",
+      "pages_created": [
+        "wiki/sources/monodyssee-repo.md",
+        "wiki/entities/Monodyssee.md",
+        "wiki/concepts/Monodyssee App.md"
+      ],
+      "pages_updated": [
+        "wiki/index.md",
+        "wiki/hot.md",
+        "wiki/log.md",
+        "wiki/entities/_index.md",
+        "wiki/concepts/_index.md",
+        "wiki/sources/_index.md",
+        "wiki/entities/Hermes International.md",
+        "wiki/entities/Savoir-faire.md",
+        "wiki/concepts/Formation Hermès.md"
+      ]
+    },
+    ".raw/savoir-faire/README.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-08",
+      "pages_created": [
+        "wiki/sources/savoir-faire-repo.md",
+        "wiki/entities/Savoir-faire.md",
+        "wiki/concepts/Savoir-faire App.md"
+      ],
+      "pages_updated": [
+        "wiki/index.md",
+        "wiki/hot.md",
+        "wiki/log.md",
+        "wiki/entities/_index.md",
+        "wiki/concepts/_index.md",
+        "wiki/sources/_index.md",
+        "wiki/entities/Hermes International.md"
+      ]
+    },
+    ".raw/clearid-demo-identities.json": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-05",
+      "pages_created": ["wiki/sources/clearid-demo-identities.md"],
+      "pages_updated": ["wiki/entities/ClearID.md", "wiki/index.md", "wiki/hot.md", "wiki/log.md", "wiki/sources/_index.md"]
+    },
+    ".raw/tilbury/README.md": {
+      "hash": "n/a",
+      "ingested_at": "2026-06-08",
+      "pages_created": [
+        "wiki/sources/tilbury-repo.md",
+        "wiki/entities/Tilbury.md",
+        "wiki/concepts/Tilbury App.md",
+        "wiki/canvases/tilbury-app-architecture.canvas"
+      ],
+      "pages_updated": [
+        "wiki/index.md",
+        "wiki/hot.md",
+        "wiki/log.md",
+        "wiki/entities/_index.md",
+        "wiki/sources/_index.md",
+        "wiki/concepts/_index.md",
+        "wiki/concepts/Formation Hermès.md"
+      ]
     }
   },
   "address_map": {
-    "wiki/concepts/DragonScale Memory.md": "c-000001"
+    "wiki/concepts/DragonScale Memory.md": "c-000001",
+    "wiki/sources/hermes-cicd-pipeline.md": "c-000004",
+    "wiki/entities/Hermes CI-CD Pipeline.md": "c-000005",
+    "wiki/concepts/GitLab CI-CD Component Architecture.md": "c-000006",
+    "wiki/concepts/Hermes CI-CD Baseline Template.md": "c-000007",
+    "wiki/concepts/AWS ECS Deployment Pattern.md": "c-000008",
+    "wiki/concepts/Container Build Pipeline.md": "c-000009"
   }
 }

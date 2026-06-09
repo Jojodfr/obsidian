@@ -1,7 +1,7 @@
 ---
 type: meta
 title: "Operation Log"
-updated: 2026-06-03
+updated: 2026-06-09
 tags:
   - meta
   - log
@@ -22,6 +22,347 @@ Append-only. New entries go at the TOP. Never edit past entries.
 Entry format: `## [YYYY-MM-DD] operation | Title`
 
 Parse recent entries: `grep "^## \[" wiki/log.md | head -10`
+
+## [2026-06-09] ingest | ClearID SMI Droits d'Acces PHP scripts
+
+- Source: `\\cifs-frsel\etudes\Applications Départementales\PEPS France\07 - Doc DSI\ClearID (interface, plugins)\Interface SMI-ClearID (droits d'acces)\PHP`
+- Type: codebase (14 PHP 8.2 scripts + operational doc)
+- Created: [[clearid-smi-droits-acces-scripts]] source page
+- Updated: [[ClearID - SMI Interface]] entity (full rewrite with 14-script inventory, API endpoints, procedures), [[ClearID Integration Architecture]] concept (enriched SMI flow table), [[index]] (108 pages, 28 sources), [[hot]], [[log]], [[entities/_index]], [[sources/_index]], [[sources/clearid-smi-droits-acces-scripts]]
+- Key findings:
+  - 14 scripts: 4 list+audit scripts (identities, principals, deleted, inactive, no-site, no-principal), 3 reference builders (sites, locations, schedules), 3 import scripts (access rights, location/schedules, contractors), 1 sync, 1 repair
+  - `ImportIdentitiesAccessClearId.php`: PATCH `/api/v3/accounts/{id}/locations/{id}/accesses`, CSV `identityIds;locationId;scheduleId;startDateTimeUtc;endDateTimeUtc;description`, UTF-8 BOM + semicolons, date conversion `d/m/Y H:i`→ISO 8601 UTC
+  - `ImportPrestatairesClearId.php`: POST `/api/v3/accounts/{id}/identities` with custom fields for SST (external contractors), deterministic `externalId = SST-{md5(...)}`, hardcoded `siteId: 72b455d1-5e21-46a1-afef-390b2f95b67d`
+  - `SynchronizeIdentitiesClearId.php`: batch synchronize all identities via `POST /identities/synchronize`, excludes 2 hardcoded GUIDs
+  - Token refresh every 2,000 records; all scripts use OAuth2 client_credentials; SSL verification disabled (`CURLOPT_SSL_VERIFYHOST/VERIFYPEER = false`)
+  - Generated cache arrays: `array_identities_prod.inc.php` (~14MB), `array_locations_prod.inc.php` (~64KB), `array_schedules_prod.inc.php` (~8KB), etc.
+  - Operational doc v1.0 (2026-06-08): import procedures, prerequisites (disable end-date limit in ClearID UI during import), CSV formatting rules
+  - Environments: demo (`x9qxn4iaq2`, `*.demo.clearid.io`) and prod (`j3gg5ror3f`, `*.eu.clearid.io`)
+- Total vault state: 108 pages, 28 sources
+
+---
+
+## [2026-06-09] ingest | Captation Croco Symfony repository
+
+- Source: `applications-departementales/symfony/captation-croco/sources-armonie` (local clone at `~/work/captation-croco`)
+- Type: codebase
+- Created: [[captation-croco-repo]] source page, [[Captation Croco]] entity, [[Captation Croco App]] concept page
+- Updated: index, hot, log, entities/_index, sources/_index, concepts/_index, Hermes International
+- Key findings:
+  - Symfony 6.4 LTS, PHP 8.2, MariaDB, Doctrine ORM 2.16 with DBAL 2.13.9 (legacy)
+  - Domain: crocodile leather traceability & quality control at Hermès
+  - 55+ AS/400 legacy entities (Cap001t-Cap055t) mapped with Doctrine PHP 8 attributes, fixed-width strings
+  - Core domain: tannery orders (Cap001t: species, finish, color, nbPeauxCmd), color tinting (Capteinte 4-part composite key), defect categories (CategorieDefautsFdr), delivery view (Vuem3t)
+  - Quality control cards: FCCController (48KB), FDRController (30KB), FCPController (13KB), BackOfficeController (46KB), RACController
+  - PDF generation via DOMPDF, Excel via PHPSpreadsheet, S3 export via AWS SDK PHP
+  - Frontend: Webpack Encore + Bootstrap 5.3 + DataTables + jQuery
+  - Auth: Microsoft Entra ID SAML via mod_auth_mellon + temporary Symfony User entity
+  - **Custom CI/CD**: NOT using standard Hermes cicd-aws-ecs component; instead: OIDC token → ECR push → custom deploy stage reads env.properties → jq task-definition mutation → ECS service update → SSM parameter writeback
+  - Environments: CHK (auto), PRD (manual on main); dev/tst/acc disabled
+  - AWS accounts: CHK `225989339017`, PRD `588738579322`, region `eu-west-3`
+  - Docker Compose local dev: app + nginx LB + MariaDB + Adminer
+  - Version 1.0.0 (2025-09-17) — relatively new application
+- Total vault state: 107 pages, 27 sources
+
+---
+
+## [2026-06-09] ingest | InfoCentre PHP400 repository
+
+- Source: `applications-departementales/infocentre/infocentre-sources` (local clone at `~/work/infocentre-sources`)
+- Type: codebase
+- Created: [[infocentre-repo]] source page, [[Infocentre]] entity, [[Infocentre App]] concept page
+- Updated: index, hot, log, entities/_index, sources/_index, concepts/_index, Hermes International, ClearID - IAM Interface
+- Key findings:
+  - PHP400 legacy framework (IBM iSeries/AS400 origin), not Symfony
+  - Dual app architecture: `php400/` (core framework + BI) + `phpallstat/` (statistics sub-app that mounts php400 framework)
+  - PHP 8.1 + Apache 2.4 + mod_auth_mellon (SAML SSO) on Debian 12
+  - Dual databases: MySQL RDS Aurora (`maillage`, `phphimlg`) + Snowflake (`pdo_snowflake` extension + `snowcd` diagnostic)
+  - 70+ report engine files: creation (crt), SQL builder, display (dsp/dspgend), tables (tbl), tabs, sharing (partage), security (secu)
+  - CI/CD: Hermes template components (gitleaks 1.1.0, SonarQube 2.4.0, containers 2.1.0, aws-ecs 4.2.1, release 2.1.0)
+  - Only dev and prd environments enabled (tst/chk/acc/ppd all false)
+  - Extensive debug tooling: Adminer, query_db, query_snowflake, tinyfilemanager, servercheck, test_pdo_snowflake_tst/prd
+  - Heavy AS400 legacy: `os400/` directory, `cyyjul`/`cyymmdd` date formats, PHP400 framework itself
+  - **IAM → ClearID mapping spec** (`iam gnt.txt`): 20-field mapping between Hermes IAM and Genetec ClearID identities, including custom fields (login_atlas, collaborator, start_date, end_date, division, etablissement)
+- Total vault state: 104 pages, 26 sources
+
+---
+
+## [2026-06-08] ingest | Suivi des Jours Travailles Symfony repository
+
+- Source: `applications-departementales/symfony/suivi-des-jours-travailles` (local clone)
+- Type: codebase
+- Created: [[suivi-des-jours-travailles-repo]] source page, [[Suivi des Jours Travailles]] entity, [[Suivi des Jours Travailles App]] concept page
+- Updated: index, hot, log, entities/_index, sources/_index, concepts/_index, Hermes International
+- Key findings: Symfony 6.4 on PHP 8.1/8.2, MariaDB 10.5, 20+ entities, 7 batch commands, AS400 legacy data import pipeline (CSV windows-1252, semicolon separator, staging tables SDJ001T..SDJ006T), custom Authenticator with role hierarchy (SUPER_ADMIN > ADMIN > ADMIN_RH > RH > MANAGER > USER), ECS Fargate deploy via standard Hermes CI/CD template, wkhtmltopdf for PDF generation, N+1 email notification workflow (EnvoiMailN1 entity)
+
+---
+
+## [2026-06-08] ingest | Tilbury Symfony repository
+
+- Source: `applications-departementales/symfony/tilbury` (24 entity PHPs + README + composer.json + .gitlab-ci.yml)
+- Type: codebase
+- Created: [[tilbury-repo]] source page, [[Tilbury]] entity, [[Tilbury App]] concept page, [[tilbury-app-architecture.canvas]] canvas
+- Updated: index, hot, entities/_index, sources/_index, concepts/_index, Formation Hermès, manifest
+- Key findings: 19 entities (Magasin boutique 24 fields, Site location 23 fields, Tandem pairing with date ranges), dual-entity discriminator pattern (usertype=M/S), bilingual Donneeref reference system, standard Hermes CI/CD pipeline to ECS Fargate
+
+---
+
+## [2026-06-08] analyze | Monodyssee training evaluation documents (PDF sample)
+
+- Type: document analysis
+- Trigger: user approved strategic sample download from `monodyssee.hermes.com/documents/pdf`
+- Source: 7 ZIP/PDF files → extracted text from ~100 PDFs via pdftotext
+- Summary: [[monodyssee-training-docs]]
+- Pages created:
+  - [[monodyssee-training-docs]] — Source page: 7 downloaded files, text-extracted samples; Jalon/Bilan/CAP document types; formateurs: PALUMBO, VRIGNAUD, COULAUD, SAINSON
+  - [[CFA Hermès Evaluation Framework]] — Concept page: full evaluation framework (Jalons, Bilans, CAP), 5-level competency scale, savoir-faire taxonomy, savoir-être competencies, Monodyssee entity mapping
+- Pages updated: [[Monodyssee]] (added training docs section), [[Formation Hermès]] (added Module 7), [[index]], [[hot]], [[log]], [[concepts/_index]], [[sources/_index]]
+- Key findings:
+  - Three document types: Jalon (technical per-product), Bilan (global periodic), CAP Maroquinerie (professional certification)
+  - 5-level scale: Non évalué → Non acquis → EC d'acquisition (-) → EC d'acquisition (+) → Acquis
+  - Jalons evaluate: griffage, couture sellier/retournée, astiquage (ponçage/filetage/tranche), parage, collage, montage
+  - Bilans evaluate: Savoir-être (9 items), Savoir-faire (11+ items), Santé-sécurité, Règlement
+  - CAP evaluates: C1 (documents), C2 (product elements), C3 (preparation)
+  - PDF footer on all docs: "Document interne et confidentiel — Hermès Propriété de l'École Hermès des savoir-faire"
+  - Products evaluated: Constance slim, Sac Rachel, Couvre cahier & marque-page
+  - All documents signed by formateur with date
+- Total vault state: 95 pages, 23 sources
+
+---
+
+## [2026-06-08] ingest | Suivi des Incidents (SDI) - Hermes incident tracking
+
+- Type: ingest
+- Trigger: user cloned `https://gitlab.com/hermesintl/applications-departementales/symfony/suivi-des-incidents` to `~/work/suivi-des-incidents`
+- Source: `.raw/suivi-des-incidents/` (31 files: README, composer.json, .gitlab-ci.yml, doctrine.yaml, bundles.php, 25 Entity PHP files)
+- Summary: [[suivi-des-incidents-repo]]
+- Pages created:
+  - [[suivi-des-incidents-repo]] - Source page: 31 files; Symfony 6.2 on PHP 8.1; MariaDB 10.5; S3 dual storage; incident tracking
+  - [[Suivi des Incidents]] - Entity page: Hermes incident tracking system; SF 6.2, MariaDB, S3, ECS Fargate; 25 entities, 17 controllers
+  - [[Suivi des Incidents App]] - Concept page: application architecture; glossaire translation, social media feature, AS400 legacy import, alert system, dual file storage, 7 batch commands
+- Pages updated: [[index]] (98 pages, 24 sources), [[hot]], [[log]], [[entities/_index]], [[concepts/_index]], [[sources/_index]], [[Hermes International]], [[Formation Hermes]]
+- Key findings:
+  - Based on Hermes Symfony project type v6.0.1
+  - 25 entities: 4 core (Incident, Pj, Mails, HistoModifNotif) + 10 RefData + 8 Admin + Legacy SDI001T + User
+  - 17 controllers: 3 SDI domain, 7 system, 4 admin, 3 BO
+  - 7 commands: batch mails, import CSV, reclassement, refdatas glossaire, division PJ, initial users, batch errors
+  - Dual file storage: local (dev) + S3 (prod) with presigned URLs
+  - Social media feature: auto-detects type numglossaire=1001, auto-adds retail.emergency@hermes.com to alerts
+  - Translation: numeric glossaire keys (tr->trans(267)) not standard Symfony i18n
+  - Auth: Symfony Security + VerifyEmailBundle, custom voters, 4 roles (USER, AUDIT, ADMIN, SUPER_ADMIN)
+  - Confidentiality: N/C/R with mailing list filtering
+  - Full CI/CD: same Hermes component pipeline as other projects
+  - ECS Fargate on AWS, dev auto-deploy from master, prd manual from tag
+  - AS400 legacy migration: complex CSV import from AGRlib.SDI001T with character encoding fixes
+- Total vault state: 98 pages, 24 sources
+
+---
+
+## [2026-06-08] ingest | Monodyssee — Symfony 6.2 successor to Savoir-faire
+
+- Type: ingest
+- Trigger: user cloned `https://gitlab.com/hermesintl/applications-departementales/savoir-faire/monodyssee` to `~/work/monodyssee`
+- Source: `.raw/monodyssee-repo/` (478 files: README, composer.json, CHANGELOG, .gitlab-ci.yml, src/, config/, templates/, docker/, etc.)
+- Summary: [[monodyssee-repo]]
+- Pages created:
+  - [[monodyssee-repo]] — Source page: 478 files; Symfony 6.2 on PHP 8.2.1; AWS ECS Fargate + S3; production active
+  - [[Monodyssee]] — Entity page: CFA Hermès MyCampH EDSF v2; Symfony 6.2; bilan/attestation/module system; v1.13.0 active
+  - [[Monodyssee App]] — Concept page: architecture (35 controllers, 12+ new entities), AWS S3 file upload, CKEditor, PHPSpreadsheet, CRON, full CI/CD pipeline
+- Pages updated: [[index]] (92 pages, 22 sources), [[hot]], [[log]], [[entities/_index]], [[concepts/_index]], [[sources/_index]], [[Hermes International]], [[Savoir-faire]], [[Formation Hermès]]
+- Key findings:
+  - Major upgrade: Symfony 5.4/PHP 7.2 → Symfony 6.2/PHP 8.2.1
+  - Doctrine mapping: annotations → PHP 8 Attributes (#[ORM\])
+  - Full CI/CD pipeline vs savoir-faire's minimal gitleaks
+  - AWS S3 dual file storage (local dev, S3 prod)
+  - New entities: Bilan, Attestation, Module, AutoEvaluation, LivretDeSuivi, ExportActions, Metiers, Questionnaire, Entretien
+  - CKEditor rich text, PHPSpreadsheet Excel, League CSV
+  - Database sessions (v1.13.0), structured error logging
+  - CRON service for automated DB exports with audit trail
+  - ECS Fargate deployment: `EcsCluster-Prd-Monodyssee-external-01`
+  - SonarQube, GitGuardian, Harbor registry, S3 variable copy
+  - v1.9.0: Module categories, module suivi, competency rules, school/job display
+  - v1.10.0: School and job user management
+  - v1.13.0: DB sessions, error_log, migration migrate
+- Total vault state: 92 pages, 22 sources
+
+---
+
+## [2026-06-08] ingest | Savoir-faire (Mon Odyssée) — Symfony 5.4 CFA evaluation portal
+
+- Type: ingest
+- Trigger: user cloned `https://gitlab.com/hermesintl/applications-departementales/savoir-faire/savoir-faire` to `~/work/savoir-faire`
+- Source: `.raw/savoir-faire/` (201 files: README, composer.json, src/Controller/*.php, src/Entity/*.php, config/, templates/, tests/, etc.)
+- Summary: [[savoir-faire-repo]]
+- Pages created:
+  - [[savoir-faire-repo]] — Source page: 201 files ingested; Symfony 5.4 on PHP 7.2.5+; PostgreSQL 13; Dompdf + wkhtmltopdf; retired project
+  - [[Savoir-faire]] — Entity page: CFA Hermès MyCampH apprentice evaluation portal; Symfony 5.4; campaign→evaluation→signature workflow
+  - [[Savoir-faire App]] — Concept page: architecture (18 controllers, 12 entities, Guard auth, PDF generation), data model, evaluation workflow
+- Pages updated: [[index]] (88 pages, 21 sources), [[hot]], [[log]], [[entities/_index]], [[concepts/_index]], [[sources/_index]], [[Hermes International]]
+- Canvas created: `wiki/canvases/savoir-faire-app-architecture.canvas`
+- Key findings:
+  - Domain: CFA Hermès MyCampH — evaluation campaigns for apprentices
+  - Mix of Doctrine annotations (legacy) and attribute syntax (newer)
+  - No API Platform, no JWT — classic Symfony form-login with session-based auth
+  - Reponses table is a **denormalized clone** of Questions per evaluation (bulk INSERT on campaign creation)
+  - Status workflow: 1=active, 4=closed, 5=abandoned
+  - Email notification to formateurs on campaign creation via CampagnesMailer
+  - Dual auth: `User` (Symfony security) + `Utilisateur` (business profile with ECOLE_ID and ROLE_ID)
+  - Role-based filtering: role 3 = school-only, role 4 = admin
+  - **Retired**: README explicitly redirects to `monodyssee`
+  - Minimal CI/CD: only gitleaks template; SonarQube commented out
+- Total vault state: 88 pages, 21 sources
+
+---
+
+## [2026-06-05] ingest | EHS Sources — Docker image source for EHS web server
+
+- Type: ingest
+- Trigger: user cloned `hermesintl/applications-departementales/ehs/ehs-sources` and requested wiki ingest
+- Source: `.raw/ehs/ehs-sources.md` + `.raw/ehs/CHANGELOG.md`
+- Summary: [[EHS-sources]]
+- Pages created:
+  - [[EHS-sources]] — Source page: EHS web server Docker image; PHP + Apache; dual MySQL schemas; OAuth2 Cognito; admin attachment rights in v1.11.0
+  - [[EHS]] — Entity page: Hermes Environmental Health & Safety departmental app; audit campaigns, risk/culture eval, site assessments
+- Pages updated: [[index]] (86 pages, 20 sources), [[hot]], [[log]], [[sources/_index]], [[entities/_index]]
+- Key findings:
+  - EHS is a PHP/Apache Docker app (not Symfony — plain PHP image source)
+  - Dual-database architecture: generic `DB_*` + EHS-specific `EHS_DB_*` (schemas `ehs` and `phphiehs`)
+  - Auth: self-enrollment Cognito + OAuth2; FQDN `ehs.internal` required for dev
+  - Version v1.11.0 (2026-04-27): admin right for audit attachments; import eval ref fix
+  - v1.9.0 (2025-09-24): **Instant Carbon Footprint feature removed**
+  - CI/CD tracked on `master` branch with SonarQube quality gate
+  - Uses Hermes baseline pipeline (similar to DOC4 and Shop Maintenance)
+- Total vault state: 86 pages, 20 sources
+
+---
+
+## [2026-06-05] ingest | ClearID Demo Identities API response
+
+- Type: ingest
+- Trigger: user sent live API response from `GET /api/v3/accounts/{accountId}/identities`
+- Source: `.raw/clearid-demo-identities.json`
+- Summary: [[clearid-demo-identities]]
+- Pages created:
+  - [[clearid-demo-identities]] — Source page: 23 demo identities; response model with privateData/companyData/systemData breakdown; custom fields catalog
+- Pages updated: [[ClearID]] (added Identity API v3 section), [[index]] (84 pages, 19 sources), [[hot]], [[log]], [[sources/_index]]
+- Key findings:
+  - Identity response is a rich nested object with 3 data sections: `privateData` (PII), `companyData` (HR), `systemData` (integration)
+  - 14 Hermes custom fields: `login_atlas`, `division`, `collaborator`, `start_date`, `end_date`, `mch_etablissement`, `manager_id`, `abu_building_name`, `mch_contract_type`, `work_location`, `cost_center`, `external_company`, `manager_email`, `iam_displayname`
+  - `lastModifiedByPrincipalType`: `User`, `Service`, or `SystemService` — indicates automation vs human touch
+  - `workerTypeDescription`: `CDI`, `CDD`, `EXT` (external), or empty
+  - Approver chain in `companyData.approvers[]` as `{approverId}` objects (distinct from Location API's top-level `approvers[]`)
+  - Notable identity: `394b901c-e635-49e7-ad15-53cb94da7ab8` (Christophe GROTTE, `ordinal: 53`, approver for ENTREE CARROUSEL)
+  - Updated Insomnia environment: `identityId` set to Christophe GROTTE's GUID
+- Total vault state: 84 pages, 19 sources
+
+---
+
+## [2026-06-05] ingest | ClearID Sites, Locations & Schedules CIFS export
+
+- Type: ingest
+- Trigger: user asked for "location id from kanal" and discovered CIFS data
+- Source: `.raw/clearid-sites-locations-schedules.csv` + `.raw/clearid-array-locations-sites-prod.php` (from `\\cifs-frsel\\...\\ClearID (interface, plugins)\\linux\\clearid\\accctrl\\csv\\`)
+- Summary: [[clearid-sites-locations-schedules]]
+- Pages created:
+  - [[clearid-sites-locations-schedules]] — Source page: CSV export from production ClearID (2025-11-23); 2,666 rows; 106 sites, 305 locations, 93 schedules
+  - [[ClearID - Site and Location Reference]] — Entity page: notable sites (Pantin-Kanal, Loupes), naming conventions, schedule types, Insomnia query patterns
+- Pages updated: [[ClearID]] (added Site and Location Reference to related + data sources table), [[index]], [[hot]], [[log]], [[entities/_index]], [[sources/_index]]
+- Key findings:
+  - **Kanal is a site, not a location**: `siteId: 6e6159b4-220f-458f-b5e6-82313d334327`, zero locations in prod export (2025-11-23)
+  - Loupes has 1 location (`0 EXT EXTERIEUR [SECTEUR 1]`) and 9 schedules
+  - Location naming pattern: `{NUMÉRO} {TYPE} {DESCRIPTION} [SECTEUR {N}]`
+  - PHP array `$array_location_site[locationId] = siteId` exists for SMI script mapping
+- Total vault state: 82 pages, 18 sources
+
+---
+
+## [2026-06-05] ingest | ClearID Access API + Developer Portal
+
+- Type: ingest
+- Trigger: user provided two URLs: https://swaggest.demo.clearid.io/ (swagger) and https://developer.genetec.com/.../overview-of-the-clearid-api (dev guide)
+- Source: `.raw/clearid-access-api-swagger.json` + `.raw/clearid-access-api-swagger.md` + `.raw/clearid-developer-guide.md` (fetched)
+- Summary: [[clearid-access-api-swagger]], [[clearid-developer-guide]]
+- Pages created:
+  - [[clearid-access-api-swagger]] — Source page: OpenAPI 3.0.4 Access API spec with 12 endpoints
+  - [[clearid-developer-guide]] — Source page: developer portal overview (auth, endpoints, code samples)
+  - [[ClearID Access API]] — Concept page: full endpoint reference + data model tables + error handling
+  - [[ClearID Developer Portal]] — Concept page: auth flows, integration patterns, data models
+- Pages updated: [[ClearID]] (added Access API section), [[index]], [[hot]], [[log]], [[sources/_index]], [[concepts/_index]]
+- Key insights:
+  - Access API v1 is separate from the identity APIs used by existing Hermes PHP scripts (v3/v4)
+  - 5 tag groups: Accesses, IdentityAccesses, RoleAccesses, ScheduleMaps, VisitorAccesses
+  - `scheduleId` deprecated in favor of `scheduleMapId` across all models
+  - Optimistic concurrency on ScheduleMap updates via `version` field
+  - Developer portal uses SPA routing — sub-pages returned 404 to direct fetch
+- Total vault state: 80 pages, 17 sources
+
+---
+
+## [2026-06-04] ingest | Hermes CI/CD Pipeline (6 repos)
+
+- Type: ingest
+- Trigger: user requested ingestion of all CI/CD repos from `~/work/cicd/`
+- Source: `.raw/hermes-cicd-pipeline.md` — synthesized from 6 GitLab repos
+- Summary: [[hermes-cicd-pipeline]]
+- Pages created:
+  - [[hermes-cicd-pipeline]] — Source summary of 6 CI/CD repos (baseline, release, containers, aws-components, aws-ecs)
+  - [[Hermes CI-CD Pipeline]] — Entity page for the Hermes CI/CD platform
+  - [[GitLab CI-CD Component Architecture]] — Concept: modular GitLab component pattern
+  - [[Hermes CI-CD Baseline Template]] — Concept: mandatory baseline jobs (SonarQube, GitGuardian, Vault, release)
+  - [[AWS ECS Deployment Pattern]] — Concept: standard ECS Fargate deployment flow
+  - [[Container Build Pipeline]] — Concept: Docker/Kaniko build + Hadolint + Container Factory validation
+- Pages updated: [[index]], [[hot]], [[entities/_index]], [[concepts/_index]], [[sources/_index]]
+- Key insight: Hermes uses a component-based CI/CD architecture with 6 reusable GitLab components; all auth via Vault+OIDC; dual registry (JFrog/Harbor); AWS deployments via LZv2 OIDC roles.
+
+---
+
+## [2026-06-04] ingest | Shop Maintenance Reversibility Documents (3 PDFs)
+
+- Type: ingest
+- Trigger: user provided 3 PDFs from Downloads folder
+- Sources:
+  - `.raw/cr-atelier6-shop-maintenance.pdf` → text extracted via pdftotext
+  - `.raw/mep-shop-maintenance-20250821.pdf` → text extracted via pdftotext
+  - `.raw/niji-hermes-reversibilite-ateliers-6.pdf` → text extracted via pdftotext
+- Summary: [[cr-atelier6-shop-maintenance]], [[mep-shop-maintenance-20250821]], [[niji-hermes-reversibilite-ateliers-6]]
+- Pages created:
+  - [[cr-atelier6-shop-maintenance]] — Compte rendu atelier 6 CI/CD (03/06/2026); participants Hermès/Niji/Talan; MEP de 3 correctifs en atelier; ROTI 4/5; plan d'actions
+  - [[mep-shop-maintenance-20250821]] — Fiche de livraison MEP 2.0.8 (21/08/2025); bugs HSM-18/19/20 (front); déploiement manuel par Hermès
+  - [[niji-hermes-reversibilite-ateliers-6]] — Macro-planning réversibilité + détail atelier 6; mirroring GitLab; branches develop/integ/stage/master; checklist MEP; 7 ateliers total
+  - [[Talan]] — Prestataire TMA prenant la maintenance de Shop Maintenance à partir du 18/06/2026
+- Pages updated: [[Shop Maintenance App]], [[Hermes International]], [[index]], [[hot]], [[log]], [[entities/_index]], [[sources/_index]]
+- Key insights:
+  - Projet de réversibilité Niji → Talan via 7 ateliers (27/04 au 04/06)
+  - Mirroring GitLab Niji → Hermès; `stage` (préprod auto) et `master` (prod manuelle)
+  - MEP 2.0.8 : release front minimaliste (3 bugs), pas de changement backend/DBD
+  - Tickets production : préfixe HSM-NN (Hermès Shop Maintenance); tickets SCRUM atelier = SCRUM-N
+  - Équipe Hermès : Kaotar ECH CHOUKARI (chef projet tech), Christophe GROTTE (expert technique)
+  - Équipe Niji : Christophe VILBERT (directeur projet), Sébastien OILLIC (dev back)
+  - Équipe Talan : Seifallah DAGHAR (chef projet), Fares AMDOUNI (lead), Mohamed GASMI (architecte), Habib HAJJEM, Jordan DIAZ
+  - Atelier pratique : MEP des 3 correctifs HSM-48/49/51 réalisée en temps réel
+  - Maintenance sous contrôle Niji jusqu'au 18/06/2026, puis Talan responsable TMA
+
+---
+
+## [2026-06-03] ingest | DOC4 Sources Repository
+- Type: ingest
+- Trigger: user said "now ingest" (`~/work/doc4`)
+- Source: `.raw/doc4-sources.md`
+- Summary: [[doc4-sources]]
+- Pages created: [[DOC4]], [[doc4-sources]]
+- Pages updated: [[Hermes International]], [[index]], [[hot]], [[log]], [[entities/_index]], [[sources/_index]]
+- Key insight: Mature PHP 7.4 + Apache app on ECS Fargate for sustainable real estate. Two MySQL DBs, Cognito OIDC auth, wkhtmltopdf PDF generation, EFS + S3 file storage.
+
+---
+
+## [2026-06-03] ingest | Epark sources-aws Repository
+- Type: ingest
+- Trigger: user said "ingest this one" (`~/work/epark/sources-aws`)
+- Source: `.raw/epark-sources-aws.md`
+- Summary: [[epark-sources-aws]]
+- Pages created: [[Epark]], [[epark-sources-aws]]
+- Pages updated: [[Hermes International]], [[index]], [[hot]], [[log]], [[entities/_index]], [[sources/_index]]
+- Key insight: Simplest Hermes app yet — static jQuery SPA on S3 with an on-prem VM cron job feeding data every 5 minutes.
 
 ---
 

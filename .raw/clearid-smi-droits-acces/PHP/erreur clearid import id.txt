@@ -1,0 +1,142 @@
+locations/e3865ba5-606c-4990-8fa7-b1d558d882dc
+
+{
+  "scheduleIds": [
+    "3f9b27de-f648-4a6e-b48f-31651364cbc8"
+  ],
+  "identityIds": [
+    "5018c38a-7584-4111-a76b-7650cb02c0fe"
+  ],
+  "startDateTimeUtc": "2025-01-01T08:00:00Z",
+  "endDateTimeUtc": "2025-12-31T18:00:00Z",
+  "description": "test CGR"
+}
+->
+{
+    "message": "Failed to pass the identity access period duration policy for site 72b455d1-5e21-46a1-afef-390b2f95b67d in account j3gg5ror3f.",
+    "statusCode": 400,
+    "statusText": "BadRequest",
+    "type": "SiteAccessDatePolicyException"
+}
+kesako ?
+il faut que la date de début soit >= à la date 
+---
+locations/e3865ba5-606c-4990-8fa7-b1d558d882dc
+
+{
+  "scheduleIds": [
+    "3f9b27de-f648-4a6e-b48f-31651364cbc8"
+  ],
+  "identityIds": [
+    "5018c38a-7584-4111-a76b-7650cb02c0fe"
+  ],
+  "startDateTimeUtc": "2025-01-01T08:00:00Z",
+  "endDateTimeUtc": "2025-04-3T18:00:00Z",
+  "description": "test CGR"
+}
+->
+{
+    "details": {
+        "endDateTimeUtc": [
+            "The input was not valid."
+        ]
+    },
+    "message": "Model is invalid.",
+    "statusCode": 400,
+    "statusText": "BadRequest",
+    "type": "RequestValidationException"
+}
+date invalide, pas de 31 avril
+
+-----
+locations/39eab272-b4d8-44a4-abed-5c12bd1909a3
+
+{
+  "scheduleIds": [
+    "39f9d89b-b80d-4d60-b9d7-b3267790790c"
+  ],
+  "identityIds": [
+    "8664e7b4-55e4-4b72-879d-667a67123403"
+  ],
+  "startDateTimeUtc": "2025-02-12T11:00:00Z",
+  "endDateTimeUtc": "2025-04-14T20:00:00Z",
+  "description": "test API 1"
+}
+->
+{
+    "accessModels": [
+        {
+            "accessId": "67cb1798e9778fdc75544e10",
+            "identityId": "8664e7b4-55e4-4b72-879d-667a67123403",
+            "scheduleId": "39f9d89b-b80d-4d60-b9d7-b3267790790c",
+            "startDateTimeUtc": "2025-03-06T23:00:00Z",
+            "endDateTimeUtc": "2025-04-14T20:00:00Z",
+            "description": "test API 1",
+            "approvedDateTimeUtc": "2025-03-07T15:58:16.2760755Z"
+        }
+    ],
+    "teamAccessModels": [],
+    "ordinal": 32
+}
+OK !
+
+
+---
+locations/e3865ba5-606c-4990-8fa7-b1d558d882dc
+
+{
+  "scheduleIds": [
+    "3f9b27de-f648-4a6e-b48f-31651364cbc8"
+  ],
+  "identityIds": [
+    "5018c38a-7584-4111-a76b-7650cb02c0fe"
+  ],
+  "startDateTimeUtc": "2025-03-08T08:00:00Z",
+  "endDateTimeUtc": "2025-03-31T18:00:00Z",
+  "description": "test CGR"
+}
+->
+{
+    "accessModels": [
+        {
+            "accessId": "67cb24d7e9778fdc75544ef8",
+            "identityId": "5018c38a-7584-4111-a76b-7650cb02c0fe",
+            "scheduleId": "3f9b27de-f648-4a6e-b48f-31651364cbc8",
+            "startDateTimeUtc": "2025-03-08T08:00:00Z",
+            "endDateTimeUtc": "2025-03-31T18:00:00Z",
+            "description": "test CGR",
+            "approvedDateTimeUtc": "2025-03-07T16:54:47.0683999Z"
+        }
+    ],
+    "teamAccessModels": [],
+    "ordinal": 2
+}
+OK !
+
+-------
+
+https://locationservice-demo.clearid.io/api/v3/accounts/x9qxn4iaq2/locations/e3865ba5-606c-4990-8fa7-b1d558d882dc/accesses
+
+{
+  "scheduleIds": [
+    "3f9b27de-f648-4a6e-b48f-31651364cbc8"
+  ],
+  "identityIds": [
+    "5018c38a-7584-4111-a76b-7650cb02c0fe"
+  ],
+  "startDateTimeUtc": "2025-01-01T08:00:00Z",
+  "endDateTimeUtc": "2025-12-31T18:00:00Z",
+  "description": "test CGR"
+}
+->
+Array
+(
+    [message] => Entity e3865ba5-606c-4990-8fa7-b1d558d882dc of type LocationEntity not found
+    [statusCode] => 404
+    [statusText] => NotFound
+    [type] => NotFoundException
+)
+
+LocationId introuvable ?  bon ENV ?
+pas en demo
+-> prod

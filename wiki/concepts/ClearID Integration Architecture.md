@@ -15,8 +15,11 @@ related:
   - "[[ClearID - SMI Interface]]"
   - "[[ClearID - IAM Interface]]"
   - "[[ClearID - Symfony API]]"
+  - "[[ClearID - Site and Location Reference]]"
   - "[[Hermes International]]"
   - "[[clearid-directory]]"
+  - "[[clearid-entities-relationships]]"
+  - "[[clearid-entities-relationships-ascii]]"
 ---
 
 # ClearID Integration Architecture
@@ -74,26 +77,37 @@ Hermes International uses Genetec ClearID as its physical access control platfor
 **Scripts:** `UpdateContractDatesClearId.php`, `AddMissingPhotoClearId.php`
 **Schedule:** Daily 04:00 via cron/Task Scheduler
 
-| Data | Direction | API |
-|------|-----------|-----|
-| Contract start/end dates | MCH → ClearID | Oracle HCM REST → ClearID PATCH |
-| Assignment start dates | MCH → ClearID | Oracle HCM REST → ClearID PATCH |
-| Employee photos | MCH → ClearID | Oracle HCM REST → ClearID POST /picture |
+| Data                     | Direction     | API                                     |     |
+| ------------------------ | ------------- | --------------------------------------- | --- |
+| Contract start/end dates | MCH → ClearID | Oracle HCM REST → ClearID PATCH         |     |
+| Assignment start dates   | MCH → ClearID | Oracle HCM REST → ClearID PATCH         |     |
+| Employee photos          | MCH → ClearID | Oracle HCM REST → ClearID POST /picture |     |
+|                          |               |                                         |     |
 
 **MCH Endpoint:** `fa-eoic-saasfaprod1.fa.ocs.oraclecloud.com/hcmRestApi/resources/11.13.18.05/`
 
 ### 2. SMI ↔ ClearID (Access Control)
 
 **Systems:** Hermes SMI ↔ ClearID
-**Scripts:** `SynchronizeIdentitiesClearId.php`, `ImportLocationsSchedulesClearId.php`, etc.
+**Scripts:** 14 PHP 8.2 scripts under `frsellpappepa02.atlas.hermes/clearid/accctrl/`
 
-| Data | Direction | Purpose |
-|------|-----------|---------|
-| Identities | SMI → ClearID | Bulk sync with `identityIds` batch |
-| Locations | SMI → ClearID | Site/location mappings |
-| Schedules | SMI → ClearID | Time-based access schedules |
-| Principals | SMI → ClearID | Access principals per identity |
-| SST Users | ClearID → SMI | Temporary worker re-export |
+| Data | Direction | Script | API Endpoint |
+|------|-----------|--------|--------------|
+| Identity sync | SMI → ClearID | `SynchronizeIdentitiesClearId.php` | `POST /api/v3/accounts/{id}/identities/synchronize` |
+| Access rights | SMI → ClearID | `ImportIdentitiesAccessClearId.php` | `PATCH /api/v3/accounts/{id}/locations/{id}/accesses` |
+| Location/schedule | SMI → ClearID | `ImportLocationsSchedulesClearId.php` | `PATCH /api/v3/accounts/{id}/locations/{id}/schedules` |
+| Contractors (SST) | SMI → ClearID | `ImportPrestatairesClearId.php` | `POST /api/v3/accounts/{id}/identities` |
+| Missing principals | SMI → ClearID | `AddMissingIdentityPrincipalsClearId.php` | depends |
+| Identity audit | ClearID | `ListIdentiesClearId.php` | `GET /api/v3/accounts/{id}/identities` |
+| Principal audit | ClearID | `ListIdentityPrincipalsClearId.php` | `GET /api/v3/accounts/{id}/identityPrincipals/{id}` |
+| Site/location ref | ClearID | `ListSitesLocationsSchedulesClearId.php` | sites, locations, schedules |
+| Access listing | ClearID | `ListAccessesByLocationClearId.php` | `GET /api/v3/accounts/{id}/locations/{id}/accesses` |
+
+**Operational notes:**
+- CSV imports require UTF-8 with BOM, semicolon separator
+- Access rights import requires temporarily disabling end-date limit in ClearID UI
+- Contractor import hardcodes siteId `72b455d1-5e21-46a1-afef-390b2f95b67d`
+- Token refresh every 2,000 records during pagination
 
 ### 3. IAM ↔ ClearID (Identity Mapping)
 
